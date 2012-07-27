@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the '500px-iOS-api' target in the '500px-iOS-api' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

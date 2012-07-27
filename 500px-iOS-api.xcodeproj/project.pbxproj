@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EAF84C115C358F90055CF29 /* PXAPIRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */; };
 		5EB9AFC815C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
 		5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */; };
 		5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
@@ -42,6 +43,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5EAF84BF15C358F90055CF29 /* PXAPIRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAPIRequestHandler.h; sourceTree = "<group>"; };
+		5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXAPIRequestHandler.m; sourceTree = "<group>"; };
 		5EB9AFC415C34F3F002E7F6D /* lib500px-iOS-api.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "lib500px-iOS-api.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB9AFC715C34F3F002E7F6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5EB9AFCB15C34F3F002E7F6D /* 500px-iOS-api-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "500px-iOS-api-Prefix.pch"; sourceTree = "<group>"; };
@@ -113,6 +116,8 @@
 			children = (
 				5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */,
 				5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */,
+				5EAF84BF15C358F90055CF29 /* PXAPIRequestHandler.h */,
+				5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */,
 				5EB9AFCA15C34F3F002E7F6D /* Supporting Files */,
 			);
 			path = "500px-iOS-api";
@@ -244,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */,
+				5EAF84C115C358F90055CF29 /* PXAPIRequestHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +402,7 @@
 				5EB9AFEB15C34F3F002E7F6D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5EB9AFEC15C34F3F002E7F6D /* Build configuration list for PBXNativeTarget "500px-iOS-apiTests" */ = {
 			isa = XCConfigurationList;
@@ -404,6 +411,7 @@
 				5EB9AFEE15C34F3F002E7F6D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

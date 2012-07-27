@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5EB9AFC815C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
-		5EB9AFCD15C34F3F002E7F6D /* _00px_iOS_api.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* _00px_iOS_api.h */; };
-		5EB9AFCF15C34F3F002E7F6D /* _00px_iOS_api.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* _00px_iOS_api.m */; };
+		5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */; };
+		5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 		5EB9AFD715C34F3F002E7F6D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */; };
 		5EB9AFD915C34F3F002E7F6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFD815C34F3F002E7F6D /* UIKit.framework */; };
 		5EB9AFDA15C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
@@ -35,7 +35,7 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
-				5EB9AFCD15C34F3F002E7F6D /* _00px_iOS_api.h in CopyFiles */,
+				5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,8 +45,8 @@
 		5EB9AFC415C34F3F002E7F6D /* lib500px-iOS-api.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "lib500px-iOS-api.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB9AFC715C34F3F002E7F6D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5EB9AFCB15C34F3F002E7F6D /* 500px-iOS-api-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "500px-iOS-api-Prefix.pch"; sourceTree = "<group>"; };
-		5EB9AFCC15C34F3F002E7F6D /* _00px_iOS_api.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _00px_iOS_api.h; sourceTree = "<group>"; };
-		5EB9AFCE15C34F3F002E7F6D /* _00px_iOS_api.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _00px_iOS_api.m; sourceTree = "<group>"; };
+		5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PXAPIHelper.h; sourceTree = "<group>"; };
+		5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PXAPIHelper.m; sourceTree = "<group>"; };
 		5EB9AFD515C34F3F002E7F6D /* 500px-iOS-apiTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px-iOS-apiTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		5EB9AFD815C34F3F002E7F6D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -111,8 +111,8 @@
 		5EB9AFC915C34F3F002E7F6D /* 500px-iOS-api */ = {
 			isa = PBXGroup;
 			children = (
-				5EB9AFCC15C34F3F002E7F6D /* _00px_iOS_api.h */,
-				5EB9AFCE15C34F3F002E7F6D /* _00px_iOS_api.m */,
+				5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */,
+				5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */,
 				5EB9AFCA15C34F3F002E7F6D /* Supporting Files */,
 			);
 			path = "500px-iOS-api";
@@ -243,7 +243,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EB9AFCF15C34F3F002E7F6D /* _00px_iOS_api.m in Sources */,
+				5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

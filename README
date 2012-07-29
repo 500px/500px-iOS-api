@@ -1,0 +1,3 @@
+Trying to write a wrapper for the 500px API in Objective-C to make it easier for other developers to write apps against this awesome service.
+
+Currently a work in progress; this is very early in the development of this project, as it's just something I'm tackling on the side in my spare time. 

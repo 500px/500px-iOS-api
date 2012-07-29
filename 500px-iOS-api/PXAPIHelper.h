@@ -8,6 +8,104 @@
 
 #import <Foundation/Foundation.h>
 
+#define kPXAPIConsumerKey       @""
+#define kPXAPIConsumerSecret    @""
+
+typedef enum : NSInteger
+{
+    PXAPIHelperPhotoFeaturePopular = 0,
+    PXAPIHelperPhotoFeatureUpcoming,
+    PXAPIHelperPhotoFeatureEditors,
+    PXAPIHelperPhotoFeatureFreshToday,
+    PXAPIHelperPhotoFeatureFreshYesterday,
+    PXAPIHelperPhotoFeatureFreshWeek,
+}PXAPIHelperPhotoFeature;
+
+typedef enum : NSInteger
+{
+    PXAPIHelperUserPhotoFeaturePhotos = 0,
+    PXAPIHelperUserPhotoFeatureFriends,
+    PXAPIHelperUserPhotoFeatureFavourites
+}PXAPIHelperUserPhotoFeature;
+
+typedef enum : NSInteger
+{
+    PXAPIHelperSortOrderCreatedAt = 0,
+    PXAPIHelperSortOrderRating,
+    PXAPIHelperSortOrderTimesViewed,
+    PXAPIHelperSortOrderVotesCount,
+    PXAPIHelperSortOrderFavouritesCount,
+    PXAPIHelperSortOrderCommentsCount,
+    PXAPIHelperSortOrderTakenAt
+}PXAPIHelperSortOrder;
+
+typedef enum : NSUInteger
+{
+    PXPhotoModelSizeExtraSmallThumbnail = (1 << 0),
+    PXPhotoModelSizeSmallThumbnail = (1 << 1),
+    PXPhotoModelSizeThumbnail = (1 << 2),
+    PXPhotoModelSizeLarge = (1 << 3),
+    PXPhotoModelSizeExtraLarge = (1 << 4)
+}PXPhotoModelSize;
+
+typedef enum : NSInteger
+{
+    PXPhotoModelCategoryUncategorized = 0,
+    PXPhotoModelCategoryAbstract = 10,
+    PXPhotoModelCategoryAnimals = 11,
+    PXPhotoModelCategoryBlackAndWhite = 5,
+    PXPhotoModelCategoryCelbrities = 1,
+    PXPhotoModelCategoryCityAndArchitecture = 9,
+    PXPhotoModelCategoryCommercial = 15,
+    PXPhotoModelCategoryConcert = 16,
+    PXPhotoModelCategoryFamily = 20,
+    PXPhotoModelCategoryFashion = 14,
+    PXPhotoModelCategoryFilm = 2,
+    PXPhotoModelCategoryFineArt = 24,
+    PXPhotoModelCategoryFood = 23,
+    PXPhotoModelCategoryJournalism = 3,
+    PXPhotoModelCategoryLandscapes = 8,
+    PXPhotoModelCategoryMacro = 12,
+    PXPhotoModelCategoryNature = 18,
+    PXPhotoModelCategoryNude = 4,
+    PXPhotoModelCategoryPeople = 7,
+    PXPhotoModelCategoryPerformingArts = 19,
+    PXPhotoModelCategorySport = 17,
+    PXPhotoModelCategoryStillLife = 6,
+    PXPhotoModelCategoryStreet = 21,
+    PXPhotoModelCategoryTransportation = 26,
+    PXPhotoModelCategoryTravel = 13,
+    PXPhotoModelCategoryUnderwater = 22,
+    PXPhotoModelCategoryUrbanExploration = 27,
+    PXPhotoModelCategoryWedding = 25,
+    
+    PXAPIHelperUnspecifiedCategory = -1
+}PXPhotoModelCategory;
+
+typedef enum : NSInteger
+{
+    PXAPIHelperModeNoAuth = 0,
+    PXAPIHelperModeOAuth
+}PXAPIHelperMode;
+
+#define kPXAPIHelperDefaultResultsPerPage   20
+#define kPXAPIHelperDefaultFeature          PXAPIHelperPhotoFeaturePopular
+#define kPXAPIHelperDefaultPhotoSize        PXPhotoModelSizeLarge
+#define kPXAPIHelperDefaultSortOrder        PXAPIHelperSortOrderCreatedAt
+
 @interface PXAPIHelper : NSObject
+
+@property (nonatomic, readonly) PXAPIHelperMode authMode;
+
+#pragma mark - GET Photos
+
+-(NSURLRequest *)urlRequestForPhotos;
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature;
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage;
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber;
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask;
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder;
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory;
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory;
 
 @end

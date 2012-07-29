@@ -17,6 +17,7 @@
 		5EB9AFDD15C34F3F002E7F6D /* lib500px-iOS-api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC415C34F3F002E7F6D /* lib500px-iOS-api.a */; };
 		5EB9AFE315C34F3F002E7F6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE115C34F3F002E7F6D /* InfoPlist.strings */; };
 		5EB9AFE615C34F3F002E7F6D /* _00px_iOS_apiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE515C34F3F002E7F6D /* _00px_iOS_apiTests.m */; };
+		5ECEF38115C4C39A00732145 /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -258,6 +259,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EB9AFE615C34F3F002E7F6D /* _00px_iOS_apiTests.m in Sources */,
+				5ECEF38115C4C39A00732145 /* PXAPIHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +340,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = "-Weverything";
 			};
 			name = Debug;
 		};
@@ -350,6 +353,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = "-Weverything";
 			};
 			name = Release;
 		};

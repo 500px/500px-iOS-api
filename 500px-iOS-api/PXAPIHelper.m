@@ -151,6 +151,26 @@
     return sortOrderString;
 }
 
+-(NSString *)stringForUserPhotoFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature
+{
+    NSString *userPhotoFeatureString;
+    
+    switch (userPhotoFeature)
+    {
+        case PXAPIHelperUserPhotoFeaturePhotos:
+            userPhotoFeatureString = @"user";
+            break;
+        case PXAPIHelperUserPhotoFeatureFavourites:
+            userPhotoFeatureString = @"user_favorites";
+            break;
+        case PXAPIHelperUserPhotoFeatureFriends:
+            userPhotoFeatureString = @"user_friends";
+            break;
+    }
+    
+    return userPhotoFeatureString;
+}
+
 -(NSString *)stringForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature
 {
     NSString *photoFeatureString;
@@ -251,6 +271,162 @@
     @"rpp" : @(resultsPerPage),
     @"sort" : [self stringForSortOrder:sortOrder],
     @"page" : @(pageNumber)} mutableCopy];
+    
+    if (excludedCategory != PXAPIHelperUnspecifiedCategory)
+    {
+        [options setObject:[self urlStringPhotoCategoryForPhotoCategory:excludedCategory] forKey:@"exclude"];
+    }
+    
+    if (includedCategory != PXAPIHelperUnspecifiedCategory)
+    {
+        [options setObject:[self urlStringPhotoCategoryForPhotoCategory:includedCategory] forKey:@"only"];
+    }
+    
+    //image sizes may be treated differently when signing with OAuth
+    NSDictionary *imageSizeDictionary = [self photoSizeDictionaryForSizeMask:photoSizesMask];
+    
+    NSMutableURLRequest *mutableRequest;
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        [options addEntriesFromDictionary:imageSizeDictionary];
+        
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
+                                      kPXAPIBaseURL,
+                                      kPXAPIConsumerKey];
+        
+        for (id key in options.allKeys) {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    
+    return mutableRequest;
+}
+
+
+#pragma mark - GET Photos for Specified User
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID
+{
+    return [self urlRequestForPhotosOfUserID:userID userFeature:kPXAPIHelperDefaultUserPhotoFeature];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature
+{
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:kPXAPIHelperDefaultResultsPerPage];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage
+{
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:1];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber
+{
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:kPXAPIHelperDefaultPhotoSize];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask
+{
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
+{
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
+{
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+{
+    NSMutableDictionary *options = [@{@"feature" : [self stringForUserPhotoFeature:userPhotoFeature],
+                                    @"rpp" : @(resultsPerPage),
+                                    @"sort" : [self stringForSortOrder:sortOrder],
+                                    @"page" : @(pageNumber),
+                                    @"user_id" : @(userID)} mutableCopy];
+    
+    if (excludedCategory != PXAPIHelperUnspecifiedCategory)
+    {
+        [options setObject:[self urlStringPhotoCategoryForPhotoCategory:excludedCategory] forKey:@"exclude"];
+    }
+    
+    if (includedCategory != PXAPIHelperUnspecifiedCategory)
+    {
+        [options setObject:[self urlStringPhotoCategoryForPhotoCategory:includedCategory] forKey:@"only"];
+    }
+    
+    //image sizes may be treated differently when signing with OAuth
+    NSDictionary *imageSizeDictionary = [self photoSizeDictionaryForSizeMask:photoSizesMask];
+    
+    NSMutableURLRequest *mutableRequest;
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        [options addEntriesFromDictionary:imageSizeDictionary];
+        
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
+                                      kPXAPIBaseURL,
+                                      kPXAPIConsumerKey];
+        
+        for (id key in options.allKeys) {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    
+    return mutableRequest;
+}
+
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName
+{
+    return [self urlRequestForPhotosOfUserName:userName userFeature:kPXAPIHelperDefaultUserPhotoFeature];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature
+{
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:kPXAPIHelperDefaultResultsPerPage];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage
+{
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:1];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber
+{
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:kPXAPIHelperDefaultPhotoSize];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask
+{
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
+{
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
+{
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+{
+    NSMutableDictionary *options = [@{@"feature" : [self stringForUserPhotoFeature:userPhotoFeature],
+                                    @"rpp" : @(resultsPerPage),
+                                    @"sort" : [self stringForSortOrder:sortOrder],
+                                    @"page" : @(pageNumber),
+                                    @"username" : userName} mutableCopy];
     
     if (excludedCategory != PXAPIHelperUnspecifiedCategory)
     {

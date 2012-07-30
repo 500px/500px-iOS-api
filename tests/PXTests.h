@@ -1,5 +1,5 @@
 //
-//  _00px_iOS_apiTests.h
+//  PXTests.h
 //  500px-iOS-apiTests
 //
 //  Created by Ash Furrow on 12-07-27.
@@ -8,6 +8,6 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface _00px_iOS_apiTests : SenTestCase
+@interface PXTests : SenTestCase
 
 @end

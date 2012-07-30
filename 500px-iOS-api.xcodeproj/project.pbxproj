@@ -16,7 +16,7 @@
 		5EB9AFDA15C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
 		5EB9AFDD15C34F3F002E7F6D /* lib500px-iOS-api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC415C34F3F002E7F6D /* lib500px-iOS-api.a */; };
 		5EB9AFE315C34F3F002E7F6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE115C34F3F002E7F6D /* InfoPlist.strings */; };
-		5EB9AFE615C34F3F002E7F6D /* _00px_iOS_apiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE515C34F3F002E7F6D /* _00px_iOS_apiTests.m */; };
+		5EB9AFE615C34F3F002E7F6D /* PXTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE515C34F3F002E7F6D /* PXTests.m */; };
 		5ECEF38115C4C39A00732145 /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 /* End PBXBuildFile section */
 
@@ -51,13 +51,13 @@
 		5EB9AFCB15C34F3F002E7F6D /* 500px-iOS-api-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "500px-iOS-api-Prefix.pch"; sourceTree = "<group>"; };
 		5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PXAPIHelper.h; sourceTree = "<group>"; };
 		5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PXAPIHelper.m; sourceTree = "<group>"; };
-		5EB9AFD515C34F3F002E7F6D /* 500px-iOS-apiTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "500px-iOS-apiTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EB9AFD515C34F3F002E7F6D /* tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		5EB9AFD815C34F3F002E7F6D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5EB9AFE015C34F3F002E7F6D /* 500px-iOS-apiTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "500px-iOS-apiTests-Info.plist"; sourceTree = "<group>"; };
 		5EB9AFE215C34F3F002E7F6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5EB9AFE415C34F3F002E7F6D /* _00px_iOS_apiTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = _00px_iOS_apiTests.h; sourceTree = "<group>"; };
-		5EB9AFE515C34F3F002E7F6D /* _00px_iOS_apiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _00px_iOS_apiTests.m; sourceTree = "<group>"; };
+		5EB9AFE415C34F3F002E7F6D /* PXTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PXTests.h; sourceTree = "<group>"; };
+		5EB9AFE515C34F3F002E7F6D /* PXTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PXTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				5EB9AFC915C34F3F002E7F6D /* 500px-iOS-api */,
-				5EB9AFDE15C34F3F002E7F6D /* 500px-iOS-apiTests */,
+				5EB9AFDE15C34F3F002E7F6D /* tests */,
 				5EB9AFC615C34F3F002E7F6D /* Frameworks */,
 				5EB9AFC515C34F3F002E7F6D /* Products */,
 			);
@@ -97,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				5EB9AFC415C34F3F002E7F6D /* lib500px-iOS-api.a */,
-				5EB9AFD515C34F3F002E7F6D /* 500px-iOS-apiTests.octest */,
+				5EB9AFD515C34F3F002E7F6D /* tests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,14 +132,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		5EB9AFDE15C34F3F002E7F6D /* 500px-iOS-apiTests */ = {
+		5EB9AFDE15C34F3F002E7F6D /* tests */ = {
 			isa = PBXGroup;
 			children = (
-				5EB9AFE415C34F3F002E7F6D /* _00px_iOS_apiTests.h */,
-				5EB9AFE515C34F3F002E7F6D /* _00px_iOS_apiTests.m */,
+				5EB9AFE415C34F3F002E7F6D /* PXTests.h */,
+				5EB9AFE515C34F3F002E7F6D /* PXTests.m */,
 				5EB9AFDF15C34F3F002E7F6D /* Supporting Files */,
 			);
-			path = "500px-iOS-apiTests";
+			path = tests;
 			sourceTree = "<group>";
 		};
 		5EB9AFDF15C34F3F002E7F6D /* Supporting Files */ = {
@@ -171,9 +171,9 @@
 			productReference = 5EB9AFC415C34F3F002E7F6D /* lib500px-iOS-api.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		5EB9AFD415C34F3F002E7F6D /* 500px-iOS-apiTests */ = {
+		5EB9AFD415C34F3F002E7F6D /* tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5EB9AFEC15C34F3F002E7F6D /* Build configuration list for PBXNativeTarget "500px-iOS-apiTests" */;
+			buildConfigurationList = 5EB9AFEC15C34F3F002E7F6D /* Build configuration list for PBXNativeTarget "tests" */;
 			buildPhases = (
 				5EB9AFD015C34F3F002E7F6D /* Sources */,
 				5EB9AFD115C34F3F002E7F6D /* Frameworks */,
@@ -185,9 +185,9 @@
 			dependencies = (
 				5EB9AFDC15C34F3F002E7F6D /* PBXTargetDependency */,
 			);
-			name = "500px-iOS-apiTests";
+			name = tests;
 			productName = "500px-iOS-apiTests";
-			productReference = 5EB9AFD515C34F3F002E7F6D /* 500px-iOS-apiTests.octest */;
+			productReference = 5EB9AFD515C34F3F002E7F6D /* tests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -212,7 +212,7 @@
 			projectRoot = "";
 			targets = (
 				5EB9AFC315C34F3F002E7F6D /* 500px-iOS-api */,
-				5EB9AFD415C34F3F002E7F6D /* 500px-iOS-apiTests */,
+				5EB9AFD415C34F3F002E7F6D /* tests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,7 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EB9AFE615C34F3F002E7F6D /* _00px_iOS_apiTests.m in Sources */,
+				5EB9AFE615C34F3F002E7F6D /* PXTests.m in Sources */,
 				5ECEF38115C4C39A00732145 /* PXAPIHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,7 +366,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "500px-iOS-api/500px-iOS-api-Prefix.pch";
-				INFOPLIST_FILE = "500px-iOS-apiTests/500px-iOS-apiTests-Info.plist";
+				INFOPLIST_FILE = "tests/500px-iOS-apiTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -381,7 +381,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "500px-iOS-api/500px-iOS-api-Prefix.pch";
-				INFOPLIST_FILE = "500px-iOS-apiTests/500px-iOS-apiTests-Info.plist";
+				INFOPLIST_FILE = "tests/500px-iOS-apiTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -408,7 +408,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5EB9AFEC15C34F3F002E7F6D /* Build configuration list for PBXNativeTarget "500px-iOS-apiTests" */ = {
+		5EB9AFEC15C34F3F002E7F6D /* Build configuration list for PBXNativeTarget "tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5EB9AFED15C34F3F002E7F6D /* Debug */,

@@ -1,18 +1,22 @@
 //
-//  _00px_iOS_apiTests.m
+//  PXTests.m
 //  500px-iOS-apiTests
 //
 //  Created by Ash Furrow on 12-07-27.
 //  Copyright (c) 2012 500px. All rights reserved.
 //
 
-#import "_00px_iOS_apiTests.h"
+#import "PXTests.h"
 #import "PXAPIHelper.h"
 
 #define kTestUserID     213451
 #define kTestUserName   @"ashfurrow"
 
-@implementation _00px_iOS_apiTests
+#define kPXAPIConsumerKey       @"__CHANGE_ME__"
+#define kPXAPIConsumerSecret    @"__CHANGE_ME__"
+
+
+@implementation PXTests
 {
     PXAPIHelper *helper;
 }
@@ -21,7 +25,10 @@
 {
     [super setUp];
     
-    helper = [[PXAPIHelper alloc] init];
+    helper = [[PXAPIHelper alloc] initWithHost:nil
+                                consumerKey:kPXAPIConsumerKey
+                                consumerSecret:kPXAPIConsumerSecret];
+    
 }
 
 - (void)tearDown
@@ -58,6 +65,15 @@
 }
 
 #pragma mark - GET Photos
+
+- (void)testBundleLoading {
+    NSLog(@"Main Bundle Path: %@", [[NSBundle mainBundle] bundlePath]);
+    
+    for (NSBundle *bundle in [NSBundle allBundles]) {
+        NSLog(@"%@: %@", [bundle bundleIdentifier],
+              [bundle pathForResource:@"fire" ofType:@"png"]);
+    }
+}
 
 -(void)testForNonNillResponse
 {

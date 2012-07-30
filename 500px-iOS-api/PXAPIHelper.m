@@ -8,11 +8,31 @@
 
 #import "PXAPIHelper.h"
 
-#define kPXAPIBaseURL   @"https://api.500px.com/v1"
-
 @implementation PXAPIHelper
 
 #pragma mark - Auth Mode Getters/Setters
+
+
+- (id)initWithHost:(NSString *)host
+       consumerKey:(NSString *)consumerKey
+    consumerSecret:(NSString *)consumerSecret
+{
+    self = [super init];
+    if (self) {
+        self.host = host;
+        self.consumerKey = consumerKey;
+        self.consumerSecret = consumerSecret;
+        [self commonInit];
+    }
+    return self;
+}
+
+- (void)commonInit
+{
+    if (!self.host) {
+        self.host = @"https://api.500px.com/v1";
+    }
+}
 
 //TODO: Need to implement OAuth support
 
@@ -287,13 +307,14 @@
     
     NSMutableURLRequest *mutableRequest;
     
+    
     if (self.authMode == PXAPIHelperModeNoAuth)
     {
         [options addEntriesFromDictionary:imageSizeDictionary];
         
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
-                                      kPXAPIBaseURL,
-                                      kPXAPIConsumerKey];
+                                      self.host,
+                                      self.consumerKey];
         
         for (id key in options.allKeys) {
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
@@ -371,8 +392,8 @@
         [options addEntriesFromDictionary:imageSizeDictionary];
         
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
-                                      kPXAPIBaseURL,
-                                      kPXAPIConsumerKey];
+                                      self.host,
+                                      self.consumerKey];
         
         for (id key in options.allKeys) {
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
@@ -448,8 +469,8 @@
         [options addEntriesFromDictionary:imageSizeDictionary];
         
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
-                                      kPXAPIBaseURL,
-                                      kPXAPIConsumerKey];
+                                      self.host,
+                                      self.consumerKey];
         
         for (id key in options.allKeys) {
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];

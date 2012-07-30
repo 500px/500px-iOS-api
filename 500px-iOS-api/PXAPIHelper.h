@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define kPXAPIConsumerKey       @""
-#define kPXAPIConsumerSecret    @""
-
 typedef enum : NSInteger
 {
     PXAPIHelperPhotoFeaturePopular = 0,
@@ -96,7 +93,16 @@ typedef enum : NSInteger
 
 @interface PXAPIHelper : NSObject
 
+@property (nonatomic, strong) NSString *host;
+@property (nonatomic, strong) NSString *consumerKey;
+@property (nonatomic, strong) NSString *consumerSecret;
+
 @property (nonatomic, readonly) PXAPIHelperMode authMode;
+
+// init method
+- (id)initWithHost:(NSString *)host
+       consumerKey:(NSString *)consumerKey
+    consumerSecret:(NSString *)consumerSecret;
 
 #pragma mark - GET Photos
 

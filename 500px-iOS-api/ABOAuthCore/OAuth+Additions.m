@@ -7,12 +7,12 @@
 
 #import "OAuth+Additions.h"
 
-@implementation NSURL (OAuthAdditions)
+@implementation NSString (OAuthAdditions)
 
-+ (NSDictionary *)ab_parseURLQueryString:(NSString *)query
+- (NSDictionary *)ab_parseURLQueryString
 {
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-	NSArray *pairs = [query componentsSeparatedByString:@"&"];
+	NSArray *pairs = [self componentsSeparatedByString:@"&"];
 	for(NSString *pair in pairs) {
 		NSArray *keyValue = [pair componentsSeparatedByString:@"="];
 		if([keyValue count] == 2) {
@@ -25,10 +25,6 @@
 	}
 	return [NSDictionary dictionaryWithDictionary:dict];
 }
-
-@end
-
-@implementation NSString (OAuthAdditions)
 
 - (NSString *)ab_RFC3986EncodedString // UTF-8 encodes prior to URL encoding
 {

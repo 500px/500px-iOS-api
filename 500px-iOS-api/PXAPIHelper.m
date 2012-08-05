@@ -511,10 +511,11 @@
             [paramsAsString appendFormat:@"%@=%@&", key, obj];
         }];
         
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos", self.host];
         NSURL *url = [NSURL URLWithString:urlString];
         
-        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
         NSString *authorizationHeader = OAuthorizationHeader(url, @"GET", bodyData, self.consumerKey, self.consumerSecret, authToken, authSecret);
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

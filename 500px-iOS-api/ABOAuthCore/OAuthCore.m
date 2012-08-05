@@ -40,16 +40,17 @@ NSString *OAuthorizationHeader(NSURL *url, NSString *method, NSData *body, NSStr
     [oAuthAuthorizationParameters setObject:_oAuthSignatureMethod forKey:@"oauth_signature_method"];
     [oAuthAuthorizationParameters setObject:_oAuthVersion forKey:@"oauth_version"];
     [oAuthAuthorizationParameters setObject:_oAuthConsumerKey forKey:@"oauth_consumer_key"];
+    
     if(_oAuthToken)
         [oAuthAuthorizationParameters setObject:_oAuthToken forKey:@"oauth_token"];
 
     // get query and body parameters
-    NSDictionary *additionalQueryParameters = [NSURL ab_parseURLQueryString:[url query]];
+    NSDictionary *additionalQueryParameters = [[url query] ab_parseURLQueryString];
     NSDictionary *additionalBodyParameters = nil;
     if(body) {
         NSString *string = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
         if(string) {
-            additionalBodyParameters = [NSURL ab_parseURLQueryString:string];
+            additionalBodyParameters = [string ab_parseURLQueryString];
         }
     }
 

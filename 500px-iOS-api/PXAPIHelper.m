@@ -12,6 +12,9 @@
 
 #pragma mark - Auth Mode Getters/Setters
 
+@synthesize host=_host;
+@synthesize consumerKey=_consumerKey;
+@synthesize consumerSecret=_consumerSecret;
 
 - (id)initWithHost:(NSString *)host
        consumerKey:(NSString *)consumerKey
@@ -19,9 +22,9 @@
 {
     self = [super init];
     if (self) {
-        self.host = host;
-        self.consumerKey = consumerKey;
-        self.consumerSecret = consumerSecret;
+        _host = host;
+        _consumerKey = consumerKey;
+        _consumerSecret = consumerSecret;
         [self commonInit];
     }
     return self;
@@ -30,7 +33,7 @@
 - (void)commonInit
 {
     if (!self.host) {
-        self.host = @"https://api.500px.com/v1";
+        _host = @"https://api.500px.com/v1";
     }
 }
 

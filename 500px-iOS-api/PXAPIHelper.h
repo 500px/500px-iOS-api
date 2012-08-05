@@ -93,9 +93,9 @@ typedef enum : NSInteger
 
 @interface PXAPIHelper : NSObject
 
-@property (nonatomic, strong) NSString *host;
-@property (nonatomic, strong) NSString *consumerKey;
-@property (nonatomic, strong) NSString *consumerSecret;
+@property (nonatomic, readonly) NSString *host;
+@property (nonatomic, readonly) NSString *consumerKey;
+@property (nonatomic, readonly) NSString *consumerSecret;
 
 @property (nonatomic, readonly) PXAPIHelperMode authMode;
 

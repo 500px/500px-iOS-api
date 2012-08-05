@@ -93,16 +93,20 @@ typedef enum : NSInteger
 
 @interface PXAPIHelper : NSObject
 
+- (id)initWithHost:(NSString *)host
+       consumerKey:(NSString *)consumerKey
+    consumerSecret:(NSString *)consumerSecret;
+
 @property (nonatomic, readonly) NSString *host;
 @property (nonatomic, readonly) NSString *consumerKey;
 @property (nonatomic, readonly) NSString *consumerSecret;
 
 @property (nonatomic, readonly) PXAPIHelperMode authMode;
 
-// init method
-- (id)initWithHost:(NSString *)host
-       consumerKey:(NSString *)consumerKey
-    consumerSecret:(NSString *)consumerSecret;
+#pragma mark - Methods to change auth mode
+
+-(void)setAuthModeToNoAuth;
+-(void)setAuthModeToOAuthWithAuthToken:(NSString *)authToken authSecret:(NSString *)authSecret;
 
 #pragma mark - GET Photos
 

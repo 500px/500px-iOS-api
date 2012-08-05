@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EA2500D15CEC1B7000592BB /* PXAuthHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAuthHelper.m */; };
+		5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; };
+		5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; };
+		5EA2501C15CEC7C7000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; };
 		5EAF84C115C358F90055CF29 /* PXAPIRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */; };
 		5EB9AFC815C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
 		5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */; };
@@ -44,6 +48,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5EA2500B15CEC1B7000592BB /* PXAuthHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAuthHelper.h; sourceTree = "<group>"; };
+		5EA2500C15CEC1B7000592BB /* PXAuthHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXAuthHelper.m; sourceTree = "<group>"; };
+		5EA2501415CEC7C7000592BB /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		5EA2501515CEC7C7000592BB /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		5EA2501615CEC7C7000592BB /* OAuth+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OAuth+Additions.h"; sourceTree = "<group>"; };
+		5EA2501715CEC7C7000592BB /* OAuth+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OAuth+Additions.m"; sourceTree = "<group>"; };
+		5EA2501815CEC7C7000592BB /* OAuthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthCore.h; sourceTree = "<group>"; };
+		5EA2501915CEC7C7000592BB /* OAuthCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthCore.m; sourceTree = "<group>"; };
 		5EAF84BF15C358F90055CF29 /* PXAPIRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAPIRequestHandler.h; sourceTree = "<group>"; };
 		5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXAPIRequestHandler.m; sourceTree = "<group>"; };
 		5EB9AFC415C34F3F002E7F6D /* lib500px-iOS-api.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "lib500px-iOS-api.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +95,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5EA2501315CEC7C7000592BB /* ABOAuthCore */ = {
+			isa = PBXGroup;
+			children = (
+				5EA2501415CEC7C7000592BB /* NSData+Base64.h */,
+				5EA2501515CEC7C7000592BB /* NSData+Base64.m */,
+				5EA2501615CEC7C7000592BB /* OAuth+Additions.h */,
+				5EA2501715CEC7C7000592BB /* OAuth+Additions.m */,
+				5EA2501815CEC7C7000592BB /* OAuthCore.h */,
+				5EA2501915CEC7C7000592BB /* OAuthCore.m */,
+			);
+			path = ABOAuthCore;
+			sourceTree = "<group>";
+		};
 		5EB9AFB915C34F3F002E7F6D = {
 			isa = PBXGroup;
 			children = (
@@ -115,8 +140,11 @@
 		5EB9AFC915C34F3F002E7F6D /* 500px-iOS-api */ = {
 			isa = PBXGroup;
 			children = (
+				5EA2501315CEC7C7000592BB /* ABOAuthCore */,
 				5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */,
 				5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */,
+				5EA2500B15CEC1B7000592BB /* PXAuthHelper.h */,
+				5EA2500C15CEC1B7000592BB /* PXAuthHelper.m */,
 				5EAF84BF15C358F90055CF29 /* PXAPIRequestHandler.h */,
 				5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */,
 				5EB9AFCA15C34F3F002E7F6D /* Supporting Files */,
@@ -251,6 +279,7 @@
 			files = (
 				5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */,
 				5EAF84C115C358F90055CF29 /* PXAPIRequestHandler.m in Sources */,
+				5EA2500D15CEC1B7000592BB /* PXAuthHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +289,9 @@
 			files = (
 				5EB9AFE615C34F3F002E7F6D /* PXTests.m in Sources */,
 				5ECEF38115C4C39A00732145 /* PXAPIHelper.m in Sources */,
+				5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */,
+				5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */,
+				5EA2501C15CEC7C7000592BB /* OAuthCore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

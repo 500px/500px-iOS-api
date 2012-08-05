@@ -7,8 +7,15 @@
 //
 
 #import "PXAPIHelper.h"
+#import "OAuthCore.h"
 
 @implementation PXAPIHelper
+{
+    PXAPIHelperMode authMode;
+    
+    NSString *authToken;
+    NSString *authSecret;
+}
 
 #pragma mark - Auth Mode Getters/Setters
 
@@ -34,14 +41,29 @@
 {
     if (!self.host) {
         _host = @"https://api.500px.com/v1";
+        authMode = PXAPIHelperModeNoAuth;
     }
 }
 
-//TODO: Need to implement OAuth support
+#pragma mark - Methods to change auth mode
+
+-(void)setAuthModeToNoAuth
+{
+    authMode = PXAPIHelperModeNoAuth;
+    authToken = nil;
+    authSecret = nil;
+}
+
+-(void)setAuthModeToOAuthWithAuthToken:(NSString *)newAuthToken authSecret:(NSString *)newAuthSecret
+{
+    authMode = PXAPIHelperModeOAuth;
+    authToken = newAuthToken;
+    authSecret = newAuthSecret;
+}
 
 -(PXAPIHelperMode)authMode
 {
-    return PXAPIHelperModeNoAuth;
+    return authMode;
 }
 
 #pragma mark - Private Methods
@@ -467,10 +489,10 @@
     
     NSMutableURLRequest *mutableRequest;
     
+    [options addEntriesFromDictionary:imageSizeDictionary];
+    
     if (self.authMode == PXAPIHelperModeNoAuth)
     {
-        [options addEntriesFromDictionary:imageSizeDictionary];
-        
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
                                       self.host,
                                       self.consumerKey];
@@ -480,6 +502,26 @@
         }
         
         mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        //  Build our parameter string
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
+        
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos", self.host];
+        NSURL *url = [NSURL URLWithString:urlString];
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *authorizationHeader = OAuthorizationHeader(url, @"GET", bodyData, self.consumerKey, self.consumerSecret, authToken, authSecret);
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+        
+        [request setHTTPMethod:@"GET"];
+        [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
+        [request setHTTPBody:bodyData];
     }
     
     return mutableRequest;

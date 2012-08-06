@@ -292,4 +292,11 @@
     STAssertNil(request, @"Request to vote for a photo did not return nil despite not being logged in");
 }
 
+-(void)testCommentRequestIsNilWhenNotAuthenticated
+{
+    NSURLRequest *request = [helper urlRequestToComment:@"some comment" onPhoto:kTestPhotoID];
+    
+    STAssertNil(request, @"Request to comment a photo did not return nil despite not being logged in");
+}
+
 @end

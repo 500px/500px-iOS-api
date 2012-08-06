@@ -8,6 +8,7 @@
 
 #import "PXAPIHelper.h"
 #import "OAuthCore.h"
+#import "OAuth+Additions.h"
 
 @implementation PXAPIHelper
 {
@@ -436,6 +437,36 @@
     NSDictionary *options = @{ @"vote" : @(1) };
     
     NSString *urlString = [NSString stringWithFormat:@"%@/photos/%d/vote", self.host, photoID];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [mutableRequest setHTTPMethod:@"POST"];
+    
+    NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+    [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [paramsAsString appendFormat:@"%@=%@&", key, obj];
+    }];
+    
+    NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+    
+    [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+    [mutableRequest setHTTPBody:bodyData];
+    
+    return mutableRequest;
+}
+
+-(NSURLRequest *)urlRequestToComment:(NSString *)comment onPhoto:(NSInteger)photoID
+{
+    if (self.authMode == PXAPIHelperModeNoAuth) return nil; //Requires authentication
+    
+    if (comment == nil) return nil; //Required parameter
+    
+    if ([[comment stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) return nil; //Required to be non-empty
+    
+    //Need to URL-encode first so the servers don't reject it
+    NSDictionary *options = @{ @"body" : [comment ab_RFC3986EncodedString] };
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/photos/%d/comments", self.host, photoID];
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [mutableRequest setHTTPMethod:@"POST"];
     

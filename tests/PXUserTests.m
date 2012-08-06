@@ -64,4 +64,15 @@
     STAssertNotNil(dictionary, @"Non-Authenticated request for user email returned nil");
 }
 
+-(void)testForUserSearch
+{
+    NSDictionary *dictionary = [PXTests jsonDictionaryForRequest:[authenticatedHelper urlRequestForUserSearchWithTerm:kTestUserName] expectingResponseCode:200];
+    
+    STAssertTrue([[dictionary valueForKey:@"users"] count] > 0, @"User search for existing user returned no users while authenticated");
+    
+    dictionary = [PXTests jsonDictionaryForRequest:[nonAuthenticatedHelper urlRequestForUserSearchWithTerm:kTestUserName] expectingResponseCode:200];
+    
+    STAssertTrue([[dictionary valueForKey:@"users"] count] > 0, @"User search for existing user returned no users");
+}
+
 @end

@@ -178,4 +178,6 @@ typedef enum : NSInteger
 -(NSURLRequest *)urlRequestForUserWithUserName:(NSString *)userName;
 -(NSURLRequest *)urlRequestForUserWithEmailAddress:(NSString *)userEmailAddress;
 
+-(NSURLRequest *)urlRequestForUserSearchWithTerm:(NSString *)searchTerm;
+
 @end

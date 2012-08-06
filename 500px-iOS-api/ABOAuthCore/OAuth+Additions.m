@@ -20,7 +20,26 @@
 			NSString *value = [keyValue objectAtIndex:1];
 			value = [value stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			if(key && value)
-				[dict setObject:value forKey:key];
+            {
+                if ([key hasSuffix:@"[]"])
+                {
+                    NSString *keyWithoutArrayBrackets = [key stringByReplacingOccurrencesOfString:@"[]" withString:@""];
+                    NSArray *existingArray = [dict valueForKey:keyWithoutArrayBrackets];
+                    
+                    NSArray *arrayWithNewValue = @[value];
+                    
+                    if (existingArray)
+                    {
+                        arrayWithNewValue = [existingArray arrayByAddingObjectsFromArray:arrayWithNewValue];
+                    }
+                    
+                    [dict setObject:arrayWithNewValue forKey:keyWithoutArrayBrackets];
+                }
+                else
+                {
+                    [dict setObject:value forKey:key];
+                }
+            }
 		}
 	}
 	return [NSDictionary dictionaryWithDictionary:dict];
@@ -61,3 +80,4 @@
 }
 
 @end
+

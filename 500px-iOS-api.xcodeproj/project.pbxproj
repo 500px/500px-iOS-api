@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5EA2500D15CEC1B7000592BB /* PXAuthHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAuthHelper.m */; };
-		5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; };
-		5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; };
-		5EA2501C15CEC7C7000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; };
+		5E5E4EE215CF03FA003F053A /* PXAuthTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE115CF03FA003F053A /* PXAuthTests.m */; };
+		5E5E4EE415CF05C3003F053A /* PXAPIHelper+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */; };
+		5E5E4EE715CF07FE003F053A /* PXAuthenticatedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE615CF07FE003F053A /* PXAuthenticatedTests.m */; };
+		5E5E4EEA15CF083C003F053A /* PXNonAuthenticatedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE915CF083C003F053A /* PXNonAuthenticatedTests.m */; };
+		5EA2500D15CEC1B7000592BB /* PXAPIHelper+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */; };
+		5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5EA2501C15CEC7C7000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EA2502115CECB79000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EA2502215CECB79000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EA2502315CECB79000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -51,8 +55,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5EA2500B15CEC1B7000592BB /* PXAuthHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAuthHelper.h; sourceTree = "<group>"; };
-		5EA2500C15CEC1B7000592BB /* PXAuthHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXAuthHelper.m; sourceTree = "<group>"; };
+		5E5E4EE015CF03FA003F053A /* PXAuthTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAuthTests.h; sourceTree = "<group>"; };
+		5E5E4EE115CF03FA003F053A /* PXAuthTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXAuthTests.m; sourceTree = "<group>"; };
+		5E5E4EE515CF07FE003F053A /* PXAuthenticatedTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAuthenticatedTests.h; sourceTree = "<group>"; };
+		5E5E4EE615CF07FE003F053A /* PXAuthenticatedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXAuthenticatedTests.m; sourceTree = "<group>"; };
+		5E5E4EE815CF083C003F053A /* PXNonAuthenticatedTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXNonAuthenticatedTests.h; sourceTree = "<group>"; };
+		5E5E4EE915CF083C003F053A /* PXNonAuthenticatedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXNonAuthenticatedTests.m; sourceTree = "<group>"; };
+		5EA2500B15CEC1B7000592BB /* PXAPIHelper+Auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PXAPIHelper+Auth.h"; sourceTree = "<group>"; };
+		5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PXAPIHelper+Auth.m"; sourceTree = "<group>"; };
 		5EA2501415CEC7C7000592BB /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		5EA2501515CEC7C7000592BB /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		5EA2501615CEC7C7000592BB /* OAuth+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OAuth+Additions.h"; sourceTree = "<group>"; };
@@ -146,8 +156,8 @@
 				5EA2501315CEC7C7000592BB /* ABOAuthCore */,
 				5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */,
 				5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */,
-				5EA2500B15CEC1B7000592BB /* PXAuthHelper.h */,
-				5EA2500C15CEC1B7000592BB /* PXAuthHelper.m */,
+				5EA2500B15CEC1B7000592BB /* PXAPIHelper+Auth.h */,
+				5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */,
 				5EAF84BF15C358F90055CF29 /* PXAPIRequestHandler.h */,
 				5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */,
 				5EB9AFCA15C34F3F002E7F6D /* Supporting Files */,
@@ -168,6 +178,12 @@
 			children = (
 				5EB9AFE415C34F3F002E7F6D /* PXTests.h */,
 				5EB9AFE515C34F3F002E7F6D /* PXTests.m */,
+				5E5E4EE015CF03FA003F053A /* PXAuthTests.h */,
+				5E5E4EE115CF03FA003F053A /* PXAuthTests.m */,
+				5E5E4EE515CF07FE003F053A /* PXAuthenticatedTests.h */,
+				5E5E4EE615CF07FE003F053A /* PXAuthenticatedTests.m */,
+				5E5E4EE815CF083C003F053A /* PXNonAuthenticatedTests.h */,
+				5E5E4EE915CF083C003F053A /* PXNonAuthenticatedTests.m */,
 				5EB9AFDF15C34F3F002E7F6D /* Supporting Files */,
 			);
 			path = tests;
@@ -285,7 +301,7 @@
 				5EA2502315CECB79000592BB /* OAuthCore.m in Sources */,
 				5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */,
 				5EAF84C115C358F90055CF29 /* PXAPIRequestHandler.m in Sources */,
-				5EA2500D15CEC1B7000592BB /* PXAuthHelper.m in Sources */,
+				5EA2500D15CEC1B7000592BB /* PXAPIHelper+Auth.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +314,10 @@
 				5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */,
 				5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */,
 				5EA2501C15CEC7C7000592BB /* OAuthCore.m in Sources */,
+				5E5E4EE215CF03FA003F053A /* PXAuthTests.m in Sources */,
+				5E5E4EE415CF05C3003F053A /* PXAPIHelper+Auth.m in Sources */,
+				5E5E4EE715CF07FE003F053A /* PXAuthenticatedTests.m in Sources */,
+				5E5E4EEA15CF083C003F053A /* PXNonAuthenticatedTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

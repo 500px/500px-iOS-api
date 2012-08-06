@@ -365,14 +365,13 @@
         {
             [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
         }
-        //TODO:
-//        else
-//        {
-//            for (NSString *imageSizeString in imageSizeArray)
-//            {
-//                [paramsAsString appendFormat:@"image_size[]=%@", imageSizeString];
-//            }
-//        }
+        else
+        {
+            for (NSString *imageSizeString in imageSizeArray)
+            {
+                [paramsAsString appendFormat:@"image_size[]=%@&", imageSizeString];
+            }
+        }
         
         NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
         
@@ -482,7 +481,13 @@
         {
             [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
         }
-        //TODO:
+        else
+        {
+            for (NSString *imageSizeString in imageSizeArray)
+            {
+                [paramsAsString appendFormat:@"image_size[]=%@&", imageSizeString];
+            }
+        }
         
         NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
         
@@ -591,7 +596,13 @@
         {
             [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
         }
-        //TODO:
+        else
+        {
+            for (NSString *imageSizeString in imageSizeArray)
+            {
+                [paramsAsString appendFormat:@"image_size[]=%@&", imageSizeString];
+            }
+        }
         
         NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
         

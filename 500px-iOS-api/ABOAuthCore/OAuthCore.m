@@ -60,19 +60,25 @@ NSString *OAuthorizationHeader(NSURL *url, NSString *method, NSData *body, NSStr
     if(additionalBodyParameters) [parameters addEntriesFromDictionary:additionalBodyParameters];
 
     // -> UTF-8 -> RFC3986
-    NSMutableDictionary *encodedParameters = [NSMutableDictionary dictionary];
+    NSMutableArray *encodedParameterStringArray = [NSMutableArray array];
     for(NSString *key in parameters) {
         NSString *value = [parameters objectForKey:key];
-        [encodedParameters setObject:[value ab_RFC3986EncodedString] forKey:[key ab_RFC3986EncodedString]];
+        if ([value isKindOfClass:[NSString class]])
+        {
+            [encodedParameterStringArray addObject:[NSString stringWithFormat:@"%@=%@", [key ab_RFC3986EncodedString], [value ab_RFC3986EncodedString]]];
+        }
+        else if ([value isKindOfClass:[NSArray class]])
+        {
+            for (id item in (NSArray *)value)
+            {
+                [encodedParameterStringArray addObject:[NSString stringWithFormat:@"%@%%5B%%5D=%@", [key ab_RFC3986EncodedString], [item ab_RFC3986EncodedString]]];
+            }
+        }
     }
 
-    NSArray *sortedKeys = [[encodedParameters allKeys] sortedArrayUsingFunction:SortParameter context:encodedParameters];
+    NSArray *sortedParameterArray = [encodedParameterStringArray sortedArrayUsingSelector:@selector(compare:)];
 
-    NSMutableArray *parameterArray = [NSMutableArray array];
-    for(NSString *key in sortedKeys) {
-        [parameterArray addObject:[NSString stringWithFormat:@"%@=%@", key, [encodedParameters objectForKey:key]]];
-    }
-    NSString *normalizedParameterString = [parameterArray componentsJoinedByString:@"&"];
+    NSString *normalizedParameterString = [sortedParameterArray componentsJoinedByString:@"&"];
 
     NSString *normalizedURLString = [NSString stringWithFormat:@"%@://%@%@", [url scheme], [url host], [url path]];
 

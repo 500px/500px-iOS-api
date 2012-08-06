@@ -272,7 +272,7 @@
     return sizeStringArray;
 }
 
-#pragma mark - GET Photos
+#pragma mark - Photos
 
 -(NSURLRequest *)urlRequestForPhotos
 {
@@ -363,7 +363,7 @@
         
         if (imageSizeArray.count == 1)
         {
-            [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
+            [paramsAsString appendFormat:@"image_size=%@&", [imageSizeArray lastObject]];
         }
         else
         {
@@ -385,7 +385,7 @@
 }
 
 
-#pragma mark - GET Photos for Specified User
+#pragma mark - Photos for Specified User
 
 -(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID
 {
@@ -479,7 +479,7 @@
         
         if (imageSizeArray.count == 1)
         {
-            [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
+            [paramsAsString appendFormat:@"image_size=%@&", [imageSizeArray lastObject]];
         }
         else
         {
@@ -569,11 +569,6 @@
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
         }
         
-        for (id key in options.allKeys)
-        {
-            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
-        }
-        
         for (NSString *imageSizeString in imageSizeArray)
         {
             [urlString appendFormat:@"&image_size[]=%@", imageSizeString];
@@ -594,7 +589,80 @@
         
         if (imageSizeArray.count == 1)
         {
-            [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
+            [paramsAsString appendFormat:@"image_size=%@&", [imageSizeArray lastObject]];
+        }
+        else
+        {
+            for (NSString *imageSizeString in imageSizeArray)
+            {
+                [paramsAsString appendFormat:@"image_size[]=%@&", imageSizeString];
+            }
+        }
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
+    }
+    
+    return mutableRequest;
+}
+
+#pragma mark - Photo Details
+
+-(NSURLRequest *)urlRequestForPhotoID:(NSInteger)photoID
+{
+    return [self urlRequestForPhotoID:photoID commentsPage:-1];
+}
+
+-(NSURLRequest *)urlRequestForPhotoID:(NSInteger)photoID commentsPage:(NSInteger)commentsPage
+{
+    return [self urlRequestForPhotoID:photoID photoSizes:kPXAPIHelperDefaultPhotoSize commentsPage:commentsPage];
+}
+
+-(NSURLRequest *)urlRequestForPhotoID:(NSInteger)photoID photoSizes:(PXPhotoModelSize)photoSizesMask commentsPage:(NSInteger)commentPage
+{
+    NSMutableURLRequest *mutableRequest;
+    
+    NSArray *imageSizeArray = [self photoSizeArrayForSizeMask:photoSizesMask];
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos/%d?consumer_key=%@",
+                                      self.host,
+                                      photoID,
+                                      self.consumerKey];
+        
+        if (commentPage > 0)
+        {
+            [urlString appendFormat:@"&comments=1&comments_page=%d", commentPage];
+        }
+        
+        for (NSString *imageSizeString in imageSizeArray)
+        {
+            [urlString appendFormat:@"&image_size[]=%@", imageSizeString];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/photos/%d",self.host, photoID];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        
+        if (commentPage > 0)
+        {
+            [paramsAsString appendFormat:@"comments=1&comments_page=%d&", commentPage];
+        }
+        
+        if (imageSizeArray.count == 1)
+        {
+            [paramsAsString appendFormat:@"image_size=%@&", [imageSizeArray lastObject]];
         }
         else
         {

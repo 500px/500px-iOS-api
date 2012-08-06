@@ -180,4 +180,10 @@ typedef enum : NSInteger
 
 -(NSURLRequest *)urlRequestForUserSearchWithTerm:(NSString *)searchTerm;
 
+//pages are 1-indexed
+-(NSURLRequest *)urlRequestForUserFollowing:(NSInteger)userID;
+-(NSURLRequest *)urlRequestForUserFollowing:(NSInteger)userID page:(NSInteger)page;
+-(NSURLRequest *)urlRequestForUserFollowers:(NSInteger)userID;
+-(NSURLRequest *)urlRequestForUserFollowers:(NSInteger)userID page:(NSInteger)page;
+
 @end

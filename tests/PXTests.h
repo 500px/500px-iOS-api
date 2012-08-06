@@ -8,6 +8,20 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
+#import "PXAPIHelper.h"
+#import "OAuthCore.h"
+#import "OAuth+Additions.h"
+#import "PXAPIHelper+Auth.h"
+
+#define kTestUserID     213451
+#define kTestUserName   @"ashfurrow"
+
+#define kUserNameForAuthentication  @""
+#define kPasswordForAuthentication  @""
+
+#define kPXAPIConsumerKey       @""
+#define kPXAPIConsumerSecret    @""
+
 @interface PXTests : SenTestCase
 
 @end

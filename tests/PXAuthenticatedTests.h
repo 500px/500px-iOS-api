@@ -8,6 +8,8 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
+#import "PXTests.h"
+
 @interface PXAuthenticatedTests : SenTestCase
 
 @end

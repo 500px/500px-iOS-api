@@ -294,12 +294,21 @@
     STAssertEqualObjects([dictionary valueForKey:@"feature"], @"user_friends", @"Photo stream request not returning user_friends");
 }
 
-//TODO: Pending a merge from preproduction being pushed live
-//-(void)testForDefaultImageSize
-//{
-//    NSDictionary *dictionary = [self jsonDictionaryForRequest:[helper urlRequestForPhotos] expectingResponseCode:200];
-//    NSLog(@"%@", dictionary);
-//    STAssertTrue([dictionary valueForKeyPath:@"photos.images"], <#description, ...#>)
-//}
+-(void)testForLoggedInUserWithNoAuth
+{
+    PXAPIHelper *notLoggedInHelper = [[PXAPIHelper alloc] initWithHost:nil consumerKey:kPXAPIConsumerKey consumerSecret:kPXAPIConsumerSecret];
+    [notLoggedInHelper setAuthModeToNoAuth];
+    
+    NSURLRequest *request = [notLoggedInHelper urlRequestForCurrentlyLoggedInUser];
+    
+    STAssertNil(request, @"Request for logged in user without auth returns non-nil value.");
+}
+
+-(void)testForLoggedInUser
+{
+    NSDictionary *dictionary = [self jsonDictionaryForRequest:[helper urlRequestForCurrentlyLoggedInUser] expectingResponseCode:200];
+
+    STAssertNotNil(dictionary, @"Logged in user returned null.");
+}
 
 @end

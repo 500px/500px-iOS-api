@@ -111,7 +111,7 @@ typedef enum : NSInteger
 -(void)setAuthModeToNoAuth;
 -(void)setAuthModeToOAuthWithAuthToken:(NSString *)authToken authSecret:(NSString *)authSecret;
 
-#pragma mark - GET Photos
+#pragma mark - Photos
 
 -(NSURLRequest *)urlRequestForPhotos;
 -(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature;
@@ -141,5 +141,9 @@ typedef enum : NSInteger
 -(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder;
 -(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory;
 -(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory;
+
+#pragma mark - Users
+
+-(NSURLRequest *)urlRequestForCurrentlyLoggedInUser;
 
 @end

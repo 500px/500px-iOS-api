@@ -283,12 +283,4 @@
     STAssertEqualObjects([dictionary valueForKey:@"feature"], @"user_friends", @"Photo stream request not returning user_friends");
 }
 
-//TODO: Pending a merge from preproduction being pushed live
-//-(void)testForDefaultImageSize
-//{
-//    NSDictionary *dictionary = [self jsonDictionaryForRequest:[helper urlRequestForPhotos] expectingResponseCode:200];
-//    NSLog(@"%@", dictionary);
-//    STAssertTrue([dictionary valueForKeyPath:@"photos.images"], <#description, ...#>)
-//}
-
 @end

@@ -41,19 +41,4 @@
     STAssertTrue([[[[dictionary valueForKey:@"photos"] lastObject] valueForKey:@"images"] count] > 1, @"GET search returned only 1 or no photos jpegs");
 }
 
--(void)testForExcludeNude
-{
-    NSDictionary *dictionary = [PXTests jsonDictionaryForRequest:[helper urlRequestForSearchTerm:@"cats" page:1  resultsPerPage:kPXAPIHelperDefaultResultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize except:PXPhotoModelCategoryNude] expectingResponseCode:200];
-    
-    STAssertEquals([[dictionary valueForKeyPath:@"filters.exclude"] intValue], PXPhotoModelCategoryNude, @"API Request exlucding nude photographs contains unfiltered results");
-}
-
--(void)testForOnlyLanscapes
-{
-    NSDictionary *dictionary = [PXTests jsonDictionaryForRequest:[helper urlRequestForSearchTerm:@"mountains" page:1  resultsPerPage:kPXAPIHelperDefaultResultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize except:PXPhotoModelCategoryNude] expectingResponseCode:200];
-    
-    STAssertEquals([[dictionary valueForKeyPath:@"filters.category"] intValue], PXPhotoModelCategoryLandscapes, @"API Request including only landscape photographs contains unfiltered results");
-}
-
-
 @end

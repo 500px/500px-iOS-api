@@ -15,14 +15,15 @@
 
 #define kTestUserID     213451
 #define kTestUserName   @"ashfurrow"
+#define kTestUserEmail  @"ash.furrow@gmail.com"
 
 #define kTestPhotoID    6617598
 
-#define kUserNameForAuthentication  @""
-#define kPasswordForAuthentication  @""
+#define kUserNameForAuthentication  @"__Username_here__" //Don't commit these after changing!
+#define kPasswordForAuthentication  @"__Password_here__"
 
-#define kPXAPIConsumerKey       @""
-#define kPXAPIConsumerSecret    @""
+#define kPXAPIConsumerKey       @"__CHANGE_ME__"
+#define kPXAPIConsumerSecret    @"__CHANGE_ME__"
 
 @interface PXTests : SenTestCase
 

@@ -285,5 +285,11 @@
     STAssertNil(request, @"Request to favourite a photo did not return nil despite not being logged in");
 }
 
+-(void)testVoteRequestIsNilWhenNotAuthenticated
+{
+    NSURLRequest *request = [helper urlRequestToVoteForPhoto:kTestPhotoID];
+    
+    STAssertNil(request, @"Request to vote for a photo did not return nil despite not being logged in");
+}
 
 @end

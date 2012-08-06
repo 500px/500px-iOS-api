@@ -148,6 +148,7 @@ typedef enum : NSInteger
 //Requires Authentication
 -(NSURLRequest *)urlRequestToFavouritePhoto:(NSInteger)photoID;
 -(NSURLRequest *)urlRequestToUnFavouritePhoto:(NSInteger)photoID;
+-(NSURLRequest *)urlRequestToVoteForPhoto:(NSInteger)photoID;
 
 #pragma mark - Photo Details
 

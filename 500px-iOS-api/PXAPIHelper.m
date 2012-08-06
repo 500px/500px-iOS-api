@@ -957,4 +957,98 @@
     return mutableRequest;
 }
 
+-(NSURLRequest *)urlRequestForUserFollowing:(NSInteger)userID
+{
+    return [self urlRequestForUserFollowing:userID page:1];
+}
+
+-(NSURLRequest *)urlRequestForUserFollowing:(NSInteger)userID page:(NSInteger)page
+{
+    NSDictionary *options = @{ @"page" : @(page) };
+    
+    NSMutableURLRequest *mutableRequest;
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/users/%d/friends?consumer_key=%@",
+                                      self.host,
+                                      userID,
+                                      self.consumerKey];
+        
+        for (id key in options.allKeys)
+        {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/users/%d/friends", self.host, userID];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
+    }
+    
+    return mutableRequest;
+}
+
+-(NSURLRequest *)urlRequestForUserFollowers:(NSInteger)userID
+{
+    return [self urlRequestForUserFollowers:userID page:1];
+}
+
+-(NSURLRequest *)urlRequestForUserFollowers:(NSInteger)userID page:(NSInteger)page
+{
+    NSDictionary *options = @{ @"page" : @(page) };
+    
+    NSMutableURLRequest *mutableRequest;
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/users/%d/followers?consumer_key=%@",
+                                      self.host,
+                                      userID,
+                                      self.consumerKey];
+        
+        for (id key in options.allKeys)
+        {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/users/%d/followers", self.host, userID];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
+    }
+    
+    return mutableRequest;
+}
+
 @end

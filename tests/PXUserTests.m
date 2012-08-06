@@ -131,7 +131,6 @@
     STAssertTrue([[dictionary valueForKey:@"page"] intValue] == 2, @"User following returned not the second page");
 }
 
-
 -(void)testForFollowersExists
 {
     NSDictionary *dictionary = [PXTests jsonDictionaryForRequest:[authenticatedHelper urlRequestForUserFollowers:kTestUserID] expectingResponseCode:200];
@@ -141,6 +140,13 @@
     dictionary = [PXTests jsonDictionaryForRequest:[authenticatedHelper urlRequestForUserFollowers:kTestUserID] expectingResponseCode:200];
     
     STAssertTrue([[dictionary valueForKey:@"followers"] count] > 0, @"User followers returned no users");
+}
+
+-(void)testFollowRequestIsNilWhenNotAuthenticated
+{
+    NSURLRequest *request = [nonAuthenticatedHelper urlRequestToFollowUser:123456];
+    
+    STAssertNil(request, @"Request to follow a user did not return nil despite not being logged in");
 }
 
 @end

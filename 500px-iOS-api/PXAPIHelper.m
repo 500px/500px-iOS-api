@@ -914,4 +914,47 @@
     return [self urlRequestForUserWithID:-1 userName:nil emailAddress:userEmailAddress];
 }
 
+-(NSURLRequest *)urlRequestForUserSearchWithTerm:(NSString *)searchTerm
+{
+    NSMutableDictionary *options = [NSMutableDictionary dictionaryWithCapacity:1];
+
+    [options setValue:searchTerm forKey:@"term"];
+    
+    NSMutableURLRequest *mutableRequest;
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/users/search?consumer_key=%@",
+                                      self.host,
+                                      self.consumerKey];
+        
+        for (id key in options.allKeys)
+        {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/users/search", self.host];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
+    }
+    
+    return mutableRequest;
+}
+
 @end

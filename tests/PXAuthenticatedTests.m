@@ -23,8 +23,7 @@
     
     NSDictionary *accessTokenDictionary = [helper authenticate500pxUserName:kUserNameForAuthentication password:kPasswordForAuthentication];
     
-//    [helper setAuthModeToOAuthWithAuthToken:[accessTokenDictionary valueForKey:@"oauth_token"] authSecret:[accessTokenDictionary valueForKey:@"oauth_token_secret"]];
-    [helper setAuthModeToOAuthWithAuthToken:@"Cvjp8UkUZ2e8tVvJvnkmjc0yPErtEX4Q425N2Lsc" authSecret:@"2Blx7f7cL4c7X4NWf3N7Jktbe84eS2NXBRcIk0vN"];
+    [helper setAuthModeToOAuthWithAuthToken:[accessTokenDictionary valueForKey:@"oauth_token"] authSecret:[accessTokenDictionary valueForKey:@"oauth_token_secret"]];
 }
 
 - (void)tearDown

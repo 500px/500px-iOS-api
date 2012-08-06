@@ -615,4 +615,21 @@
     return mutableRequest;
 }
 
+#pragma mark - GET Users
+
+-(NSURLRequest *)urlRequestForCurrentlyLoggedInUser
+{
+    if (self.authMode == PXAPIHelperModeNoAuth) return nil; //Requires authentication
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/users", self.host];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [mutableRequest setHTTPMethod:@"GET"];
+    
+    NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", nil, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+    
+    [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+    
+    return mutableRequest;
+}
+
 @end

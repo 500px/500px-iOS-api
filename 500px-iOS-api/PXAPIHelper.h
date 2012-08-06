@@ -149,6 +149,7 @@ typedef enum : NSInteger
 -(NSURLRequest *)urlRequestToFavouritePhoto:(NSInteger)photoID;
 -(NSURLRequest *)urlRequestToUnFavouritePhoto:(NSInteger)photoID;
 -(NSURLRequest *)urlRequestToVoteForPhoto:(NSInteger)photoID;
+-(NSURLRequest *)urlRequestToComment:(NSString *)comment onPhoto:(NSInteger)photoID;
 
 #pragma mark - Photo Details
 

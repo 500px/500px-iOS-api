@@ -307,4 +307,18 @@
     STAssertNotNil(dictionary, @"Photo search for \"cats\" returned nil details. Inconceivable!");
 }
 
+-(void)testCommentRequestIsNilWhenCommentIsEmpty
+{
+    NSURLRequest *request = [helper urlRequestToComment:@"" onPhoto:kTestPhotoID];
+    
+    STAssertNil(request, @"Request to comment on a photo did not return nil despite comment being empty");
+}
+
+-(void)testCommentRequestIsNilWhenCommentIsNil
+{
+    NSURLRequest *request = [helper urlRequestToComment:nil onPhoto:kTestPhotoID];
+    
+    STAssertNil(request, @"Request to comment on a photo did not return nil despite comment being nil");
+}
+
 @end

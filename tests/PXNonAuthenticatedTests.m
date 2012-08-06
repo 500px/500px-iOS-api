@@ -278,4 +278,12 @@
     STAssertTrue([[dictionary valueForKey:@"photos"] count] < kPXAPIHelperMaximumResultsPerPage+1, @"Requested more than maximum allowable results per page.");
 }
 
+-(void)testFavouriteRequestIsNilWhenNotAuthenticated
+{
+    NSURLRequest *request = [helper urlRequestToFavouritePhoto:kTestPhotoID];
+    
+    STAssertNil(request, @"Request to favourite a photo did not return nil despite not being logged in");
+}
+
+
 @end

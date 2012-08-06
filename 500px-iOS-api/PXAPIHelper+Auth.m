@@ -14,7 +14,7 @@
 
 -(NSDictionary *)requestTokenAndSecret
 {
-    NSURL *requestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@oauth/request_token", @"https://api.500px.com/v1/"]];
+    NSURL *requestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/oauth/request_token", self.host]];
     NSMutableURLRequest *requestTokenURLRequest = [NSMutableURLRequest requestWithURL:requestURL];
     [requestTokenURLRequest setHTTPMethod:@"POST"];
     
@@ -30,14 +30,43 @@
     
     NSString *returnedRequestTokenString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
-    //        NSLog(@"%@", returnedString);
-    
     NSDictionary *returnedRequestTokenDictionary = [returnedRequestTokenString ab_parseURLQueryString];
     return returnedRequestTokenDictionary;
 }
 
--(void)authenticate500pxUserName:(NSString *)username password:(NSString *)password
+-(NSDictionary *)authenticate500pxUserName:(NSString *)username password:(NSString *)password
 {
+    NSDictionary *returnedRequestTokenDictionary = [self requestTokenAndSecret];
+    
+    NSString *requestOauthToken = [returnedRequestTokenDictionary valueForKey:@"oauth_token"];
+    NSString *requestOauthSecret = [returnedRequestTokenDictionary valueForKey:@"oauth_token_secret"];
+    
+    NSMutableURLRequest *accessTokenURLRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/oauth/access_token", self.host]]];
+    [accessTokenURLRequest setHTTPMethod:@"POST"];
+    
+    NSDictionary *accessTokenOptions = @{ @"x_auth_mode": @"client_auth", @"x_auth_password": password, @"x_auth_username" : username };
+    
+    NSMutableString *accessTokenParamsAsString = [[NSMutableString alloc] init];
+    [accessTokenOptions enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [accessTokenParamsAsString appendFormat:@"%@=%@&", key, obj];
+    }];
+    
+    NSData *bodyData = [accessTokenParamsAsString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(accessTokenURLRequest.URL, @"POST", bodyData, self.consumerKey, self.consumerSecret, requestOauthToken, requestOauthSecret);
+    
+    
+    [accessTokenURLRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+    [accessTokenURLRequest setHTTPBody:bodyData];
+    
+    NSError *error;
+    NSHTTPURLResponse *response;
+    
+    NSData *returnedAccessTokenData = [NSURLConnection sendSynchronousRequest:accessTokenURLRequest returningResponse:&response error:&error];
+    
+    NSString *returnedAccessTokenString = [[NSString alloc] initWithData:returnedAccessTokenData encoding:NSUTF8StringEncoding];
+    
+    return [returnedAccessTokenString ab_parseURLQueryString];
 }
 
 @end

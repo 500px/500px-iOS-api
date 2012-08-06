@@ -12,9 +12,6 @@
 @implementation PXAPIHelper
 {
     PXAPIHelperMode authMode;
-    
-    NSString *authToken;
-    NSString *authSecret;
 }
 
 #pragma mark - Auth Mode Getters/Setters
@@ -22,6 +19,9 @@
 @synthesize host=_host;
 @synthesize consumerKey=_consumerKey;
 @synthesize consumerSecret=_consumerSecret;
+
+@synthesize authToken=_authToken;
+@synthesize authSecret=_authSecret;
 
 - (id)initWithHost:(NSString *)host
        consumerKey:(NSString *)consumerKey
@@ -50,15 +50,15 @@
 -(void)setAuthModeToNoAuth
 {
     authMode = PXAPIHelperModeNoAuth;
-    authToken = nil;
-    authSecret = nil;
+    _authToken = nil;
+    _authSecret = nil;
 }
 
 -(void)setAuthModeToOAuthWithAuthToken:(NSString *)newAuthToken authSecret:(NSString *)newAuthSecret
 {
     authMode = PXAPIHelperModeOAuth;
-    authToken = newAuthToken;
-    authSecret = newAuthSecret;
+    _authToken = newAuthToken;
+    _authSecret = newAuthSecret;
 }
 
 -(PXAPIHelperMode)authMode
@@ -244,32 +244,32 @@
     return photoFeatureString;
 }
 
--(NSDictionary *)photoSizeDictionaryForSizeMask:(PXPhotoModelSize)sizeMask
+-(NSArray *)photoSizeArrayForSizeMask:(PXPhotoModelSize)sizeMask
 {
-    NSMutableDictionary *sizeStringDictionary = [NSMutableDictionary dictionary];
+    NSMutableArray *sizeStringArray = [NSMutableArray array];
     
     if ((sizeMask & PXPhotoModelSizeExtraSmallThumbnail) > 0)
     {
-        [sizeStringDictionary setObject:@"1" forKey:@"image_size[]"];
+        [sizeStringArray addObject:@"1"];
     }
     if ((sizeMask & PXPhotoModelSizeSmallThumbnail) > 0)
     {
-        [sizeStringDictionary setObject:@"2" forKey:@"image_size[]"];
+        [sizeStringArray addObject:@"2"];
     }
     if ((sizeMask & PXPhotoModelSizeThumbnail) > 0)
     {
-        [sizeStringDictionary setObject:@"3" forKey:@"image_size[]"];
+        [sizeStringArray addObject:@"3"];
     }
     if ((sizeMask & PXPhotoModelSizeLarge) > 0)
     {
-        [sizeStringDictionary setObject:@"4" forKey:@"image_size[]"];
+        [sizeStringArray addObject:@"4"];
     }
     if ((sizeMask & PXPhotoModelSizeExtraLarge) > 0)
     {
-        [sizeStringDictionary setObject:@"5" forKey:@"image_size[]"];
+        [sizeStringArray addObject:@"5"];
     }
     
-    return sizeStringDictionary;
+    return sizeStringArray;
 }
 
 #pragma mark - GET Photos
@@ -327,25 +327,59 @@
         [options setObject:[self urlStringPhotoCategoryForPhotoCategory:includedCategory] forKey:@"only"];
     }
     
-    //image sizes may be treated differently when signing with OAuth
-    NSDictionary *imageSizeDictionary = [self photoSizeDictionaryForSizeMask:photoSizesMask];
+    NSArray *imageSizeArray = [self photoSizeArrayForSizeMask:photoSizesMask];    
     
     NSMutableURLRequest *mutableRequest;
     
-    
     if (self.authMode == PXAPIHelperModeNoAuth)
     {
-        [options addEntriesFromDictionary:imageSizeDictionary];
         
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
                                       self.host,
                                       self.consumerKey];
         
-        for (id key in options.allKeys) {
+        for (id key in options.allKeys)
+        {
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
         }
         
+        for (NSString *imageSizeString in imageSizeArray)
+        {
+            [urlString appendFormat:@"&image_size[]=%@", imageSizeString];
+        }
+        
         mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/photos",self.host];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
+        
+        if (imageSizeArray.count == 1)
+        {
+            [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
+        }
+        //TODO:
+//        else
+//        {
+//            for (NSString *imageSizeString in imageSizeArray)
+//            {
+//                [paramsAsString appendFormat:@"image_size[]=%@", imageSizeString];
+//            }
+//        }
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
     }
     
     return mutableRequest;
@@ -407,15 +441,12 @@
         [options setObject:[self urlStringPhotoCategoryForPhotoCategory:includedCategory] forKey:@"only"];
     }
     
-    //image sizes may be treated differently when signing with OAuth
-    NSDictionary *imageSizeDictionary = [self photoSizeDictionaryForSizeMask:photoSizesMask];
+    NSArray *imageSizeArray = [self photoSizeArrayForSizeMask:photoSizesMask];
     
     NSMutableURLRequest *mutableRequest;
     
     if (self.authMode == PXAPIHelperModeNoAuth)
     {
-        [options addEntriesFromDictionary:imageSizeDictionary];
-        
         NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos?consumer_key=%@",
                                       self.host,
                                       self.consumerKey];
@@ -424,7 +455,41 @@
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
         }
         
+        for (id key in options.allKeys)
+        {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        for (NSString *imageSizeString in imageSizeArray)
+        {
+            [urlString appendFormat:@"&image_size[]=%@", imageSizeString];
+        }
+        
         mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/photos",self.host];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
+        
+        if (imageSizeArray.count == 1)
+        {
+            [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
+        }
+        //TODO:
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
     }
     
     return mutableRequest;
@@ -484,12 +549,9 @@
         [options setObject:[self urlStringPhotoCategoryForPhotoCategory:includedCategory] forKey:@"only"];
     }
     
-    //image sizes may be treated differently when signing with OAuth
-    NSDictionary *imageSizeDictionary = [self photoSizeDictionaryForSizeMask:photoSizesMask];
-    
     NSMutableURLRequest *mutableRequest;
     
-    [options addEntriesFromDictionary:imageSizeDictionary];
+    NSArray *imageSizeArray = [self photoSizeArrayForSizeMask:photoSizesMask];
     
     if (self.authMode == PXAPIHelperModeNoAuth)
     {
@@ -497,32 +559,46 @@
                                       self.host,
                                       self.consumerKey];
         
-        for (id key in options.allKeys) {
+        for (id key in options.allKeys)
+        {
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        for (id key in options.allKeys)
+        {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        for (NSString *imageSizeString in imageSizeArray)
+        {
+            [urlString appendFormat:@"&image_size[]=%@", imageSizeString];
         }
         
         mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     }
     else if (self.authMode == PXAPIHelperModeOAuth)
     {
-        //  Build our parameter string
+        NSString *urlString = [NSString stringWithFormat:@"%@/photos",self.host];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
         NSMutableString *paramsAsString = [[NSMutableString alloc] init];
         [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             [paramsAsString appendFormat:@"%@=%@&", key, obj];
         }];
         
+        if (imageSizeArray.count == 1)
+        {
+            [paramsAsString appendFormat:@"&image_size=%@", [imageSizeArray lastObject]];
+        }
+        //TODO:
+        
         NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
         
-        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos", self.host];
-        NSURL *url = [NSURL URLWithString:urlString];
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
         
-        NSString *authorizationHeader = OAuthorizationHeader(url, @"GET", bodyData, self.consumerKey, self.consumerSecret, authToken, authSecret);
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-        
-        [request setHTTPMethod:@"GET"];
-        [request setValue:authorizationHeader forHTTPHeaderField:@"Authorization"];
-        [request setHTTPBody:bodyData];
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
     }
     
     return mutableRequest;

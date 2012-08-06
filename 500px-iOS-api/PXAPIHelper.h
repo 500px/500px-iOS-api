@@ -88,7 +88,7 @@ typedef enum : NSInteger
 #define kPXAPIHelperDefaultResultsPerPage   20
 #define kPXAPIHelperDefaultFeature          PXAPIHelperPhotoFeaturePopular
 #define kPXAPIHelperDefaultUserPhotoFeature PXAPIHelperUserPhotoFeaturePhotos
-#define kPXAPIHelperDefaultPhotoSize        PXPhotoModelSizeLarge
+#define kPXAPIHelperDefaultPhotoSize        PXPhotoModelSizeLarge | PXPhotoModelSizeThumbnail
 #define kPXAPIHelperDefaultSortOrder        PXAPIHelperSortOrderCreatedAt
 
 @interface PXAPIHelper : NSObject
@@ -100,6 +100,9 @@ typedef enum : NSInteger
 @property (nonatomic, readonly) NSString *host;
 @property (nonatomic, readonly) NSString *consumerKey;
 @property (nonatomic, readonly) NSString *consumerSecret;
+
+@property (nonatomic, readonly) NSString *authToken;
+@property (nonatomic, readonly) NSString *authSecret;
 
 @property (nonatomic, readonly) PXAPIHelperMode authMode;
 

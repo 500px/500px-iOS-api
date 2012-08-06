@@ -12,6 +12,6 @@
 
 @interface PXAPIHelper (Auth)
 
--(void)authenticate500pxUserName:(NSString *)username password:(NSString *)password;
+-(NSDictionary *)authenticate500pxUserName:(NSString *)username password:(NSString *)password;
 
 @end

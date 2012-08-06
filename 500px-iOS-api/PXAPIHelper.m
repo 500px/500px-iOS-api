@@ -414,7 +414,6 @@
     NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
     
     [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
-    [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
     [mutableRequest setHTTPBody:bodyData];
     
     return mutableRequest;
@@ -428,6 +427,31 @@
 -(NSURLRequest *)urlRequestToUnFavouritePhoto:(NSInteger)photoID
 {
     return [self urlRequestToChangePhotoFavouriteStatus:photoID method:@"DELETE"];
+}
+
+-(NSURLRequest *)urlRequestToVoteForPhoto:(NSInteger)photoID
+{
+    if (self.authMode == PXAPIHelperModeNoAuth) return nil; //Requires authentication
+    
+    NSDictionary *options = @{ @"vote" : @(1) };
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/photos/%d/vote", self.host, photoID];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [mutableRequest setHTTPMethod:@"POST"];
+    
+    NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+    [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [paramsAsString appendFormat:@"%@=%@&", key, obj];
+    }];
+    
+    NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+    
+    [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+    [mutableRequest setHTTPBody:bodyData];
+    
+    return mutableRequest;
 }
 
 #pragma mark - Photos for Specified User
@@ -1120,7 +1144,6 @@
     NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
     
     [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
-    [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
     [mutableRequest setHTTPBody:bodyData];
     
     return mutableRequest;

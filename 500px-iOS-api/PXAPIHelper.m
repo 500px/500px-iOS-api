@@ -718,14 +718,9 @@
 
 -(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
 {
-    return [self urlRequestForSearchTerm:searchTerm page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
-}
-
--(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
-{
     if (!searchTerm) return nil;
     
-    return [self urlRequestForSearchTerm:searchTerm searchTag:nil page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:includedCategory];
+    return [self urlRequestForSearchTerm:searchTerm searchTag:nil page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
 }
 
 -(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag
@@ -750,18 +745,13 @@
 
 -(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
 {
-    return [self urlRequestForSearchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
-}
-
--(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
-{
     if (!searchTag) return nil;
     
-    return [self urlRequestForSearchTerm:nil searchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:includedCategory];
+    return [self urlRequestForSearchTerm:nil searchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
 }
 
 //Private method
--(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
 {
     if (resultsPerPage > kPXAPIHelperMaximumResultsPerPage)
         resultsPerPage = kPXAPIHelperMaximumResultsPerPage;
@@ -780,11 +770,6 @@
     if (excludedCategory != PXAPIHelperUnspecifiedCategory)
     {
         [options setObject:[self urlStringPhotoCategoryForPhotoCategory:excludedCategory] forKey:@"exclude"];
-    }
-    
-    if (includedCategory != PXAPIHelperUnspecifiedCategory)
-    {
-        [options setObject:[self urlStringPhotoCategoryForPhotoCategory:includedCategory] forKey:@"only"];
     }
     
     NSArray *imageSizeArray = [self photoSizeArrayForSizeMask:photoSizesMask];
@@ -858,6 +843,75 @@
     [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
     
     return mutableRequest;
+}
+
+//Private methods
+-(NSURLRequest *)urlRequestForUserWithID:(NSInteger)userID userName:(NSString *)userName emailAddress:(NSString *)userEmailAddress
+{
+    NSMutableDictionary *options = [NSMutableDictionary dictionaryWithCapacity:1];
+    if (userID > 0)
+    {
+        [options setValue:@(userID) forKey:@"id"];
+    }
+    else if (userName)
+    {
+        [options setValue:userName forKey:@"username"];
+    }
+    else if (userEmailAddress)
+    {
+        [options setValue:userEmailAddress forKey:@"email"];
+    }
+    
+    NSMutableURLRequest *mutableRequest;
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/users/show?consumer_key=%@",
+                                      self.host,
+                                      self.consumerKey];
+        
+        for (id key in options.allKeys)
+        {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/users/show", self.host];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
+    }
+    
+    return mutableRequest;
+}
+
+-(NSURLRequest *)urlRequestForUserWithID:(NSInteger)userID
+{
+    return [self urlRequestForUserWithID:userID userName:nil emailAddress:nil];
+}
+
+-(NSURLRequest *)urlRequestForUserWithUserName:(NSString *)userName
+{
+    return [self urlRequestForUserWithID:-1 userName:userName emailAddress:nil];
+}
+
+-(NSURLRequest *)urlRequestForUserWithEmailAddress:(NSString *)userEmailAddress
+{
+    return [self urlRequestForUserWithID:-1 userName:nil emailAddress:userEmailAddress];
 }
 
 @end

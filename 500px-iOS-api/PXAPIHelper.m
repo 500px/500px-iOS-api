@@ -1051,4 +1051,47 @@
     return mutableRequest;
 }
 
+//Private method
+-(NSURLRequest *)urlRequestToChangeFollowStatus:(NSInteger)userID method:(NSString *)method
+{
+    if (self.authMode == PXAPIHelperModeNoAuth) return nil; //Requires authentication
+    
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    
+    if ([method isEqualToString:@"DELETE"])
+    {
+        //500px API does not support HTTP DELETE calls, so we use this workaround
+        [options setValue:@"delete" forKey:@"_method"];
+    }
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/users/%d/friends", self.host, userID];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [mutableRequest setHTTPMethod:@"POST"];
+    
+    NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+    [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [paramsAsString appendFormat:@"%@=%@&", key, obj];
+    }];
+    
+    NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+    
+    [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+    [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
+    [mutableRequest setHTTPBody:bodyData];
+    
+    return mutableRequest;
+}
+
+-(NSURLRequest *)urlRequestToFollowUser:(NSInteger)userToFollowID
+{
+    return [self urlRequestToChangeFollowStatus:userToFollowID method:@"POST"];
+}
+
+-(NSURLRequest *)urlRequestToUnFollowUser:(NSInteger)userToUnFollowID
+{
+    return [self urlRequestToChangeFollowStatus:userToUnFollowID method:@"DELETE"];
+}
+
 @end

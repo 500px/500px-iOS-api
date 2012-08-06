@@ -172,6 +172,7 @@ typedef enum : NSInteger
 
 #pragma mark - Users
 
+//Requires Authentication
 -(NSURLRequest *)urlRequestForCurrentlyLoggedInUser;
 
 -(NSURLRequest *)urlRequestForUserWithID:(NSInteger)userID;
@@ -185,5 +186,9 @@ typedef enum : NSInteger
 -(NSURLRequest *)urlRequestForUserFollowing:(NSInteger)userID page:(NSInteger)page;
 -(NSURLRequest *)urlRequestForUserFollowers:(NSInteger)userID;
 -(NSURLRequest *)urlRequestForUserFollowers:(NSInteger)userID page:(NSInteger)page;
+
+//Requires Authentication
+-(NSURLRequest *)urlRequestToFollowUser:(NSInteger)userToFollowID;
+-(NSURLRequest *)urlRequestToUnFollowUser:(NSInteger)userToUnFollowID;
 
 @end

@@ -286,36 +286,39 @@
 
 -(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage
 {
-    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage pageNumber:1];
+    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:1];
 }
 
--(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page
 {
-    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:kPXAPIHelperDefaultPhotoSize];
+    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize];
 }
 
--(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask
 {
-    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
+    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
 }
 
--(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
 {
-    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder except:(PXPhotoModelCategory)PXAPIHelperUnspecifiedCategory];
+    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder except:(PXPhotoModelCategory)PXAPIHelperUnspecifiedCategory];
 }
 
--(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
 {
     
-    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
+    return [self urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
 }
 
--(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+-(NSURLRequest *)urlRequestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
 {
+    if (resultsPerPage > kPXAPIHelperMaximumResultsPerPage)
+        resultsPerPage = kPXAPIHelperMaximumResultsPerPage;
+    
     NSMutableDictionary *options = [@{@"feature" : [self stringForPhotoFeature:photoFeature],
     @"rpp" : @(resultsPerPage),
     @"sort" : [self stringForSortOrder:sortOrder],
-    @"page" : @(pageNumber)} mutableCopy];
+    @"page" : @(page)} mutableCopy];
     
     if (excludedCategory != PXAPIHelperUnspecifiedCategory)
     {
@@ -399,35 +402,38 @@
 
 -(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage
 {
-    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:1];
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:1];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page
 {
-    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:kPXAPIHelperDefaultPhotoSize];
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask
 {
-    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
 {
-    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory];
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
 {
-    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
+    return [self urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+-(NSURLRequest *)urlRequestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
 {
+    if (resultsPerPage > kPXAPIHelperMaximumResultsPerPage)
+        resultsPerPage = kPXAPIHelperMaximumResultsPerPage;
+    
     NSMutableDictionary *options = [@{@"feature" : [self stringForUserPhotoFeature:userPhotoFeature],
                                     @"rpp" : @(resultsPerPage),
                                     @"sort" : [self stringForSortOrder:sortOrder],
-                                    @"page" : @(pageNumber),
+                                    @"page" : @(page),
                                     @"user_id" : @(userID)} mutableCopy];
     
     if (excludedCategory != PXAPIHelperUnspecifiedCategory)
@@ -513,35 +519,38 @@
 
 -(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage
 {
-    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:1];
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:1];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page
 {
-    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:kPXAPIHelperDefaultPhotoSize];
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask
 {
-    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder
 {
-    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory];
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory
 {
-    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage pageNumber:pageNumber photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
+    return [self urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
 }
 
--(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage pageNumber:(NSInteger)pageNumber photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+-(NSURLRequest *)urlRequestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
 {
+    if (resultsPerPage > kPXAPIHelperMaximumResultsPerPage)
+        resultsPerPage = kPXAPIHelperMaximumResultsPerPage;
+    
     NSMutableDictionary *options = [@{@"feature" : [self stringForUserPhotoFeature:userPhotoFeature],
                                     @"rpp" : @(resultsPerPage),
                                     @"sort" : [self stringForSortOrder:sortOrder],
-                                    @"page" : @(pageNumber),
+                                    @"page" : @(page),
                                     @"username" : userName} mutableCopy];
     
     if (excludedCategory != PXAPIHelperUnspecifiedCategory)
@@ -659,6 +668,157 @@
         {
             [paramsAsString appendFormat:@"comments=1&comments_page=%d&", commentPage];
         }
+        
+        if (imageSizeArray.count == 1)
+        {
+            [paramsAsString appendFormat:@"image_size=%@&", [imageSizeArray lastObject]];
+        }
+        else
+        {
+            for (NSString *imageSizeString in imageSizeArray)
+            {
+                [paramsAsString appendFormat:@"image_size[]=%@&", imageSizeString];
+            }
+        }
+        
+        NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"GET", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+        
+        [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+        [mutableRequest setURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?%@", urlString, paramsAsString]]];
+    }
+    
+    return mutableRequest;
+}
+
+#pragma mark - Photo Searching
+
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm
+{
+    return [self urlRequestForSearchTerm:searchTerm page:1];
+}
+
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page
+{
+    return [self urlRequestForSearchTerm:searchTerm page:1 resultsPerPage:kPXAPIHelperDefaultResultsPerPage];
+}
+
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage
+{
+    if (!searchTerm) return nil;
+    
+    return [self urlRequestForSearchTerm:searchTerm page:page resultsPerPage:resultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize];
+}
+
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask
+{
+    return [self urlRequestForSearchTerm:searchTerm page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
+{
+    return [self urlRequestForSearchTerm:searchTerm page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+{
+    if (!searchTerm) return nil;
+    
+    return [self urlRequestForSearchTerm:searchTerm searchTag:nil page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:includedCategory];
+}
+
+-(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag
+{
+    return [self urlRequestForSearchTag:searchTag page:1];
+}
+
+-(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag page:(NSUInteger)page
+{
+    return [self urlRequestForSearchTag:searchTag page:1 resultsPerPage:kPXAPIHelperDefaultResultsPerPage];
+}
+
+-(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage
+{
+    return [self urlRequestForSearchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize];
+}
+
+-(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask
+{
+    return [self urlRequestForSearchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
+{
+    return [self urlRequestForSearchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+{
+    if (!searchTag) return nil;
+    
+    return [self urlRequestForSearchTerm:nil searchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory only:includedCategory];
+}
+
+//Private method
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory
+{
+    if (resultsPerPage > kPXAPIHelperMaximumResultsPerPage)
+        resultsPerPage = kPXAPIHelperMaximumResultsPerPage;
+    
+    NSMutableDictionary *options = [@{@"rpp" : @(resultsPerPage),
+                                    @"page" : @(page)} mutableCopy];
+    if (searchTerm)
+    {
+        [options setValue:searchTerm forKey:@"term"];
+    }
+    else if (searchTag)
+    {
+        [options setValue:searchTag forKey:@"tag"];
+    }
+    
+    if (excludedCategory != PXAPIHelperUnspecifiedCategory)
+    {
+        [options setObject:[self urlStringPhotoCategoryForPhotoCategory:excludedCategory] forKey:@"exclude"];
+    }
+    
+    if (includedCategory != PXAPIHelperUnspecifiedCategory)
+    {
+        [options setObject:[self urlStringPhotoCategoryForPhotoCategory:includedCategory] forKey:@"only"];
+    }
+    
+    NSArray *imageSizeArray = [self photoSizeArrayForSizeMask:photoSizesMask];
+    
+    NSMutableURLRequest *mutableRequest;
+    
+    if (self.authMode == PXAPIHelperModeNoAuth)
+    {
+        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@/photos/search?consumer_key=%@",
+                                      self.host,
+                                      self.consumerKey];
+        
+        for (id key in options.allKeys)
+        {
+            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
+        }
+        
+        for (NSString *imageSizeString in imageSizeArray)
+        {
+            [urlString appendFormat:@"&image_size[]=%@", imageSizeString];
+        }
+        
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    }
+    else if (self.authMode == PXAPIHelperModeOAuth)
+    {
+        NSString *urlString = [NSString stringWithFormat:@"%@/photos/search",self.host];
+        mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [mutableRequest setHTTPMethod:@"GET"];
+        
+        NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+        [options enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [paramsAsString appendFormat:@"%@=%@&", key, obj];
+        }];
         
         if (imageSizeArray.count == 1)
         {

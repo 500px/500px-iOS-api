@@ -16,6 +16,8 @@
 #define kTestUserID     213451
 #define kTestUserName   @"ashfurrow"
 
+#define kTestPhotoID    6617598
+
 #define kUserNameForAuthentication  @""
 #define kPasswordForAuthentication  @""
 
@@ -23,5 +25,7 @@
 #define kPXAPIConsumerSecret    @""
 
 @interface PXTests : SenTestCase
+
++(NSDictionary *)jsonDictionaryForRequest:(NSURLRequest *)urlRequest expectingResponseCode:(NSInteger)httpResponseCode;
 
 @end

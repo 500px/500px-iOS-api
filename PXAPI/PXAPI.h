@@ -11,6 +11,6 @@
 #define kPXConsumerKey      @"__CHANGE_ME__"
 #define kPXConsumerSecret   @"__CHANGE_ME__"
 
-#import "PXRequest.h"
 #import "PXAPIHelper.h"
 #import "PXAPIHelper+Auth.h"
+#import "PXRequest.h"

@@ -7,13 +7,15 @@
 //
 
 #import "PXRequest.h"
-#import "PXAPIHelper.h"
 #import "PXAPIHelper+Auth.h"
 
 #import "PXAPI.h"
 
 NSString * const PXRequestErrorConnectionDomain = @"connection error";
 NSString * const PXRequestErrorRequestDomain = @"request cancelled";
+
+NSString * const PXRequestPhotosCompleted = @"photos returned";
+NSString * const PXRequestPhotosFailed = @"photos failed";
 
 NSString * const PXAuthenticationChangedNotification = @"500px authentication changed";
 
@@ -172,6 +174,65 @@ static PXAPIHelper *apiHelper;
     }
     
     [PXRequest removeRequestFromInProgressMutableSet:self];
+}
+
+
+#pragma mark - Convenience methods for access 500px API
+
++(void)requestForPhotos:(PXRequestCompletionBlock)completionBlock
+{
+    [self requestForPhotoFeature:kPXAPIHelperDefaultFeature completion:completionBlock];
+}
+
++(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature completion:(PXRequestCompletionBlock)completionBlock
+{
+    [self requestForPhotoFeature:photoFeature resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
+}
+
++(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
+{
+    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:1 completion:completionBlock];
+}
+
++(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
+}
+
++(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
+{
+    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder completion:completionBlock];
+}
+
++(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder completion:(PXRequestCompletionBlock)completionBlock
+{
+    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    NSURLRequest *urlRequest = [apiHelper urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:includedCategory];
+    
+    [[[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        if (error)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotosFailed object:error];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotosCompleted object:results];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, error);
+        }
+    }] start];
 }
 
 @end

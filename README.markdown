@@ -17,15 +17,15 @@ Go to your Xocde project directory and type the following:
 
 Once the submodule has finished downloading, drag and drop the new Xcode project into your existing project.
 
-![Drag and drop subproject](http://ashfurrow.com/500px-iOS-api/subproject.png)
+![Drag and drop subproject](http://static.ashfurrow.com.s3.amazonaws.com/github/subproject.png)
 
 Now that the subproject is added, we need to link against it. Expand the subproject's Products folder and drag the `libPXAPI.a` file into your projects "Link Binary With libraries" list in the project details editor.
 
-![Drag and drop the library to be linked against](http://ashfurrow.com/500px-iOS-api/linking.png)
+![Drag and drop the library to be linked against](http://static.ashfurrow.com.s3.amazonaws.com/github/linking.png)
 
 Under "Build Settings", add an additional Linker flag of `-ObjC`.
 
-![Additional linker flag](http://ashfurrow.com/500px-iOS-api/linkerflag.png)
+![Additional linker flag](http://static.ashfurrow.com.s3.amazonaws.com/github/linkerflag.png)
 
 Now that you're linking against the library, you're almost done! Wherever you want to use the 500px API, make sure you import the `PXAPIHelper.h` file:
 

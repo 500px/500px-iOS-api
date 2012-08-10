@@ -49,7 +49,7 @@ NSString *const PXRequestForUserFollowersListCompleted = @"request to list user 
 NSString *const PXRequestForUserFollowersListFailed = @"request to list user followers failed";
 
 NSString *const PXAuthenticationChangedNotification = @"500px authentication changed";
-NSString *const PXAuthenticationFailedNotification = @"500px authentication changed";
+NSString *const PXAuthenticationFailedNotification = @"500px authentication failed";
 
 @interface PXRequest () <NSURLConnectionDataDelegate>
 @end

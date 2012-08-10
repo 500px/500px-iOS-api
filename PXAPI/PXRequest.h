@@ -28,12 +28,17 @@ typedef enum : NSInteger
 
 typedef enum : NSInteger
 {
+    //General API Errors
     PXRequestAPIDomainCodeRequiredParametersWereMissing = 0,
     PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid,
+    //User Errors
     PXRequestAPIDomainCodeUserHasBeenDisabled,
     PXRequestAPIDomainCodeUserDoesNotExist,
     PXRequestAPIDomainCodeUserHasBeenDisabledOrIsAlreadyFollowingUser,
-    PXRequestAPIDomainCodeUserHasBeenDisabledOrIsNotFollowingUser
+    PXRequestAPIDomainCodeUserHasBeenDisabledOrIsNotFollowingUser,
+    //Photo Errors
+    PXRequestAPIDomainCodePhotoDoesNotExist,
+    PXRequestAPIDomainCodePhotoWasDeletedOrUserWasDeactivated
 }PXRequestAPIDomainCode;
 
 extern NSString * const PXAuthenticationChangedNotification;

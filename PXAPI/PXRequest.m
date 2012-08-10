@@ -98,6 +98,11 @@ static PXAPIHelper *apiHelper;
 
 -(void)start
 {
+    if (self.requestStatus != PXRequestStatusNotStarted)
+    {
+        NSLog(@"Attempt to start existing request. Ignoring.");
+    }
+    
     _requestStatus = PXRequestStatusStarted;
     
     connectionMutableData = [NSMutableData data];

@@ -17,6 +17,9 @@ NSString * const PXRequestErrorRequestDomain = @"request cancelled";
 NSString * const PXRequestPhotosCompleted = @"photos returned";
 NSString * const PXRequestPhotosFailed = @"photos failed";
 
+NSString * const PXRequestLoggedInUserCompleted = @"logged in user request completed";
+NSString * const PXRequestLoggedInUserFailed = @"logged in user request failed";
+
 NSString * const PXAuthenticationChangedNotification = @"500px authentication changed";
 
 @interface PXRequest () <NSURLConnectionDataDelegate>
@@ -99,6 +102,26 @@ static PXAPIHelper *apiHelper;
 
 #pragma mark - Private class methods
 
++(void)generateNotLoggedInError:(PXRequestCompletionBlock)completionBlock
+{
+    NSLog(@"Error: consumer key and secret not specified.");
+    
+    if (completionBlock)
+    {
+        completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeUserNotLoggedIn userInfo:@{ NSLocalizedDescriptionKey : @"User must be authenticated to use this request." }]);
+    }
+}
+
++(void)generateNoConsumerKeyError:(PXRequestCompletionBlock)completionBlock
+{
+    NSLog(@"Error: User must be authenticated in for this request.");
+    
+    if (completionBlock)
+    {
+        completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeNoConsumerKeyAndSecret userInfo:@{ NSLocalizedDescriptionKey : @"No Consumer Key and Consumer Secret were specified before using PXRequest." }]);
+    }
+}
+
 +(void)addRequestToInProgressMutableSet:(PXRequest *)request
 {
     dispatch_sync(inProgressRequestsMutableSetAccessQueue, ^{
@@ -121,7 +144,7 @@ static PXAPIHelper *apiHelper;
 {
     if (!apiHelper)
     {
-        NSLog(@"Error: consumer key and secret not specified.");
+        [self generateNoConsumerKeyError:nil];
         return;
     }
 
@@ -240,14 +263,7 @@ static PXAPIHelper *apiHelper;
 {
     if (!apiHelper)
     {
-        NSLog(@"Error: consumer key and secret not specified.");
-        
-        if (completionBlock)
-        {
-            completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeNoConsumerKeyAndSecret userInfo:@{ NSLocalizedDescriptionKey : @"No Consumer Key and Consumer Secret were specified before using PXRequest." }]);
-        }
-        
-        return nil;
+        [self generateNoConsumerKeyError:completionBlock];
     }
 
     NSURLRequest *urlRequest = [apiHelper urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:includedCategory];
@@ -314,12 +330,7 @@ static PXAPIHelper *apiHelper;
 {   
     if (!apiHelper)
     {
-        NSLog(@"Error: consumer key and secret not specified");
-        
-        if (completionBlock)
-        {
-            completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeNoConsumerKeyAndSecret userInfo:@{ NSLocalizedDescriptionKey : @"No Consumer Key and Consumer Secret were specified before using PXRequest." }]);
-        }
+        [self generateNoConsumerKeyError:completionBlock];
         
         return nil;
     }
@@ -386,12 +397,7 @@ static PXAPIHelper *apiHelper;
 {
     if (!apiHelper)
     {
-        NSLog(@"Error: consumer key and secret not specified");
-        
-        if (completionBlock)
-        {
-            completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeNoConsumerKeyAndSecret userInfo:@{ NSLocalizedDescriptionKey : @"No Consumer Key and Consumer Secret were specified before using PXRequest." }]);
-        }
+        [self generateNoConsumerKeyError:completionBlock];
         
         return nil;
     }
@@ -531,8 +537,55 @@ static PXAPIHelper *apiHelper;
 //Requires Authentication
 +(PXRequest *)requestForCurrentlyLoggedInUserWithCompletion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    if (apiHelper.authMode == PXAPIHelperModeNoAuth)
+    {
+        [self generateNotLoggedInError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestForCurrentlyLoggedInUser];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissing userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserHasBeenDisabled userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 

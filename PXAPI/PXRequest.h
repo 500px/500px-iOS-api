@@ -11,16 +11,27 @@
 
 extern NSString * const PXRequestErrorConnectionDomain;
 extern NSString * const PXRequestErrorRequestDomain;
+extern NSString * const PXRequestAPIDomain;
 
 extern NSString * const PXRequestPhotosCompleted;
 extern NSString * const PXRequestPhotosFailed;
+
+extern NSString * const PXRequestLoggedInUserCompleted;
+extern NSString * const PXRequestLoggedInUserFailed;
 
 typedef enum : NSInteger
 {
     PXRequestErrorCodeNoConsumerKeyAndSecret = 0,
     PXRequestErrorCodeUserNotLoggedIn,
-    PXRequestErrorCodeCancelled
+    PXRequestErrorCodeCancelled,
 }PXRequestErrorCode;
+
+typedef enum : NSInteger
+{
+    PXRequestAPIDomainCodeRequiredParametersWereMissing = 0,
+    PXRequestAPIDomainCodeUserHasBeenDisabled,
+    PXRequestAPIDomainCodeUserDoesNotExist
+}PXRequestAPIDomainCode;
 
 extern NSString * const PXAuthenticationChangedNotification;
 

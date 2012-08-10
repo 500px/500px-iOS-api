@@ -588,7 +588,6 @@ static PXAPIHelper *apiHelper;
     return request;
 }
 
-
 +(PXRequest *)requestForUserWithID:(NSInteger)userID completion:(PXRequestCompletionBlock)completionBlock
 {
 #warning Unimplemented
@@ -638,18 +637,103 @@ static PXAPIHelper *apiHelper;
     return nil;
 }
 
-
 //Requires Authentication
 +(PXRequest *)requestToFollowUser:(NSInteger)userToFollowID completion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    if (apiHelper.authMode == PXAPIHelperModeNoAuth)
+    {
+        [self generateNotLoggedInError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestToFollowUser:userToFollowID];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserHasBeenDisabledOrIsAlreadyFollowingUser userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 +(PXRequest *)requestToUnFollowUser:(NSInteger)userToUnFollowID completion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    if (apiHelper.authMode == PXAPIHelperModeNoAuth)
+    {
+        [self generateNotLoggedInError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestToUnFollowUser:userToUnFollowID];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserHasBeenDisabledOrIsNotFollowingUser userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 @end

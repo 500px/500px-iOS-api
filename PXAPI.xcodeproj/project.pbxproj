@@ -60,6 +60,7 @@
 /* Begin PBXFileReference section */
 		5E58B41E15D55DAB00C8DC84 /* PXRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXRequest.h; sourceTree = "<group>"; };
 		5E58B41F15D55DAB00C8DC84 /* PXRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXRequest.m; sourceTree = "<group>"; };
+		5E58B43215D567C400C8DC84 /* PXAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAPI.h; sourceTree = "<group>"; };
 		5E5E4EE015CF03FA003F053A /* PXAuthTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAuthTests.h; sourceTree = "<group>"; };
 		5E5E4EE115CF03FA003F053A /* PXAuthTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXAuthTests.m; sourceTree = "<group>"; };
 		5E5E4EE515CF07FE003F053A /* PXAuthenticatedTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXAuthenticatedTests.h; sourceTree = "<group>"; };
@@ -160,6 +161,7 @@
 		5EB9AFC915C34F3F002E7F6D /* PXAPI */ = {
 			isa = PBXGroup;
 			children = (
+				5E58B43215D567C400C8DC84 /* PXAPI.h */,
 				5EA2501315CEC7C7000592BB /* ABOAuthCore */,
 				5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */,
 				5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */,

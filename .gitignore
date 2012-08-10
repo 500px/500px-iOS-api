@@ -3,5 +3,4 @@
 .DS_Store
 project.xcworkspace
 xcuserdata
-PXAPI/PXAPI.h
 tests/PXTests.h

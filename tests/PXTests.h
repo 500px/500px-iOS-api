@@ -19,11 +19,11 @@
 
 #define kTestPhotoID    6617598
 
-#define kUserNameForAuthentication  @"__Username_here__" //Don't commit these after changing!
-#define kPasswordForAuthentication  @"__Password_here__"
+#define kUserNameForAuthentication  @"ashfurrow"
+#define kPasswordForAuthentication  @"P@ssword2"
 
-#define kPXAPIConsumerKey       @"__CHANGE_ME__"
-#define kPXAPIConsumerSecret    @"__CHANGE_ME__"
+#define kPXAPIConsumerKey       @"zEJa8SeeKpcrqQQfHGzDiKuuHRQssAS09ppVl7Kb"
+#define kPXAPIConsumerSecret    @"VyJcaxeMcEnjDYO9OQLNYsbENNEDZ0pycTn7NTy2"
 
 @interface PXTests : SenTestCase
 

@@ -130,7 +130,7 @@
 		5EB9AFB915C34F3F002E7F6D = {
 			isa = PBXGroup;
 			children = (
-				5EB9AFC915C34F3F002E7F6D /* 500px-iOS-api */,
+				5EB9AFC915C34F3F002E7F6D /* PXAPI */,
 				5EB9AFDE15C34F3F002E7F6D /* tests */,
 				5EB9AFC615C34F3F002E7F6D /* Frameworks */,
 				5EB9AFC515C34F3F002E7F6D /* Products */,
@@ -156,7 +156,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5EB9AFC915C34F3F002E7F6D /* 500px-iOS-api */ = {
+		5EB9AFC915C34F3F002E7F6D /* PXAPI */ = {
 			isa = PBXGroup;
 			children = (
 				5EA2501315CEC7C7000592BB /* ABOAuthCore */,
@@ -168,7 +168,7 @@
 				5EAF84C015C358F90055CF29 /* PXAPIRequestHandler.m */,
 				5EB9AFCA15C34F3F002E7F6D /* Supporting Files */,
 			);
-			path = "500px-iOS-api";
+			path = PXAPI;
 			sourceTree = "<group>";
 		};
 		5EB9AFCA15C34F3F002E7F6D /* Supporting Files */ = {

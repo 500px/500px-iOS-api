@@ -19,13 +19,13 @@ Once the submodule has finished downloading, drag and drop the new Xcode project
 
 ![Drag and drop subproject](http://ashfurrow.com/500px-iOS-api/subproject.png)
 
-Now that the subproject is added, we need to link against it. Expand the subproject's Products folder and drag the `lib500px-iOS-api.a` file into your projects "Link Binary With libraries" list in the project details editor.
+Now that the subproject is added, we need to link against it. Expand the subproject's Products folder and drag the `libPXAPI.a` file into your projects "Link Binary With libraries" list in the project details editor.
 
 ![Drag and drop the library to be linked against](http://ashfurrow.com/500px-iOS-api/linking.png)
 
 Now that you're linking against the library, you're almost done! Wherever you want to use the 500px API, make sure you import the `PXAPIHelper.h` file:
 
-    #import <500px-iOS-api/PXAPIHelper.h>
+    #import <PXAPI/PXAPIHelper.h>
 
 I'll be adding a sample project later to show how to actually call the API. Basically, all you get right now is a series of methods that generate `NSURLRequest`s signed to your user, and log in functionality. 
 

@@ -89,11 +89,6 @@ static PXAPIHelper *apiHelper;
     return self;
 }
 
--(void)dealloc
-{
-    
-}
-
 #pragma mark - Public Instance Methods
 
 -(void)start

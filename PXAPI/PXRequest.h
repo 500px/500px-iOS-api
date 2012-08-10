@@ -29,6 +29,7 @@ typedef enum : NSInteger
 typedef enum : NSInteger
 {
     PXRequestAPIDomainCodeRequiredParametersWereMissing = 0,
+    PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid,
     PXRequestAPIDomainCodeUserHasBeenDisabled,
     PXRequestAPIDomainCodeUserDoesNotExist,
     PXRequestAPIDomainCodeUserHasBeenDisabledOrIsAlreadyFollowingUser,

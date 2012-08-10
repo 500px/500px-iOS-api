@@ -169,7 +169,7 @@ static PXAPIHelper *apiHelper;
 }
 
 #pragma mark - Public Class Methods
-+(void)authenticateWithUserName:(NSString *)userName password:(NSString *)password
++(void)authenticateWithUserName:(NSString *)userName password:(NSString *)password completion:(void (^)(BOOL stop))completionBlock
 {
     if (!apiHelper)
     {
@@ -184,10 +184,20 @@ static PXAPIHelper *apiHelper;
             if (accessTokenDictionary.allKeys.count > 0)
             {
                 [PXRequest setAuthToken:[accessTokenDictionary valueForKey:@"oauth_token"] authSecret:[accessTokenDictionary valueForKey:@"oauth_token_secret"]];
+                
+                if (completionBlock)
+                {
+                    completionBlock(YES);
+                }
             }
             else
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:PXAuthenticationFailedNotification object:nil];
+                
+                if (completionBlock)
+                {
+                    completionBlock(NO);
+                }
             }
         });
     });

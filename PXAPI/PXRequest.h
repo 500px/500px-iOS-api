@@ -91,7 +91,7 @@ typedef enum : NSInteger
 @property (nonatomic, readonly) PXRequestStatus requestStatus;
 
 +(void)setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret;
-+(void)authenticateWithUserName:(NSString *)userName password:(NSString *)password;
++(void)authenticateWithUserName:(NSString *)userName password:(NSString *)password completion:(void (^)(BOOL stop))completionBlock;
 +(void)removeUserAuthentication;
 +(void)setAuthToken:(NSString *)authToken authSecret:(NSString *)authSecret;
 

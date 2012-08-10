@@ -440,7 +440,7 @@
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "500px-iOS-api/500px-iOS-api-Prefix.pch";
+				GCC_PREFIX_HEADER = "PXAPI/500px-iOS-api-Prefix.pch";
 				INFOPLIST_FILE = "tests/PXAPITests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -455,7 +455,7 @@
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "500px-iOS-api/500px-iOS-api-Prefix.pch";
+				GCC_PREFIX_HEADER = "PXAPI/500px-iOS-api-Prefix.pch";
 				INFOPLIST_FILE = "tests/PXAPITests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;

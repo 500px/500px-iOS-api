@@ -25,7 +25,7 @@ Now that the subproject is added, we need to link against it. Expand the subproj
 
 Now that you're linking against the library, you're almost done! Wherever you want to use the 500px API, make sure you import the `PXAPIHelper.h` file:
 
-    #import <PXAPI/PXAPIHelper.h>
+    #import <PXAPI/PXAPI.h>
 
 I'll be adding a sample project later to show how to actually call the API. Basically, all you get right now is a series of methods that generate `NSURLRequest`s signed to your user, and log in functionality. 
 

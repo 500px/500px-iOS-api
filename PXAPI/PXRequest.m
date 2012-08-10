@@ -418,6 +418,185 @@ static PXAPIHelper *apiHelper;
     
     return request;
 }
+#pragma mark Favourite, Vote, and Comment
 
+//Requires Authentication
++(PXRequest *)requestToFavouritePhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
++(PXRequest *)requestToUnFavouritePhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
++(PXRequest *)requestToVoteForPhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
++(PXRequest *)requestToComment:(NSString *)comment onPhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
+#pragma mark Photo Details
+
+//Comment pages are 1-indexed
+//20 comments per page
+
++(PXRequest *)requestForPhotoID:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotoID:photoID photoSizes:kPXAPIHelperDefaultPhotoSize commentsPage:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotoID:(NSInteger)photoID commentsPage:(NSInteger)commentsPage completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotoID:photoID photoSizes:kPXAPIHelperDefaultPhotoSize commentsPage:commentsPage completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotoID:(NSInteger)photoID photoSizes:(PXPhotoModelSize)photoSizesMask commentsPage:(NSInteger)commentPage completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
+#pragma mark Photo Searching
+
+//Search page results are 1-indexed
+
++(PXRequest *)requestForSearchTerm:(NSString *)searchTerm completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTerm:searchTerm page:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTerm:searchTerm page:page resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTerm:searchTerm page:page resultsPerPage:resultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTerm:searchTerm page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTerm:(NSString *)searchTerm page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
++(PXRequest *)requestForSearchTag:(NSString *)searchTag completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTag:searchTag page:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTag:(NSString *)searchTag page:(NSUInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTag:searchTag page:1 resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTag:searchTag page:1 resultsPerPage:kPXAPIHelperDefaultResultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchTag:searchTag page:1 resultsPerPage:kPXAPIHelperDefaultResultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
+#pragma mark Users
+
+//Requires Authentication
++(PXRequest *)requestForCurrentlyLoggedInUserWithCompletion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
++(PXRequest *)requestForUserWithID:(NSInteger)userID completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
++(PXRequest *)requestForUserWithUserName:(NSString *)userName completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
++(PXRequest *)requestForUserWithEmailAddress:(NSString *)userEmailAddress completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
++(PXRequest *)requestForUserSearchWithTerm:(NSString *)searchTerm completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
+//pages are 1-indexed
++(PXRequest *)requestForUserFollowing:(NSInteger)userID completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForUserFollowing:userID page:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForUserFollowing:(NSInteger)userID page:(NSInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
++(PXRequest *)requestForUserFollowers:(NSInteger)userID completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForUserFollowers:userID page:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForUserFollowers:(NSInteger)userID page:(NSInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
+
+//Requires Authentication
++(PXRequest *)requestToFollowUser:(NSInteger)userToFollowID completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
+
++(PXRequest *)requestToUnFollowUser:(NSInteger)userToUnFollowID completion:(PXRequestCompletionBlock)completionBlock
+{
+#warning Unimplemented
+    return nil;
+}
 
 @end

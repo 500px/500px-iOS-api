@@ -75,6 +75,16 @@
     [alert show];
 }
 
+-(void)loginFailed
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    [[[UIAlertView alloc] initWithTitle:@"Login failed" message:@":(" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] show];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PXAuthenticationFailedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PXAuthenticationChangedNotification object:nil];
+}
+
 -(void)userDidLogin:(NSNotification *)notification
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -86,8 +96,11 @@
         [PXRequest requestForCurrentlyLoggedInUserWithCompletion:^(NSDictionary *results, NSError *error) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Hello, %@", [results valueForKeyPath:@"user.firstname"]] message:@"Welcome to the World's Best Photography." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"YEAH!", nil];
             [alert show];
-    }];
+        }];
     }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PXAuthenticationFailedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PXAuthenticationChangedNotification object:nil];
 }
 
 #pragma mark - Table View
@@ -167,6 +180,7 @@
     NSString *password = [[alertView textFieldAtIndex:1] text];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:PXAuthenticationChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginFailed) name:PXAuthenticationFailedNotification object:nil];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [PXRequest authenticateWithUserName:userName password:password];

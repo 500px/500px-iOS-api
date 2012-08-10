@@ -72,6 +72,7 @@ typedef enum : NSInteger
 }PXRequestAPIDomainCode;
 
 extern NSString * const PXAuthenticationChangedNotification;
+extern NSString * const PXAuthenticationFailedNotification;
 
 typedef void (^PXRequestCompletionBlock)(NSDictionary *results, NSError *error);
 

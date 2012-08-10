@@ -48,7 +48,8 @@ NSString *const PXRequestForUserFollowingListFailed = @"request to list user fol
 NSString *const PXRequestForUserFollowersListCompleted = @"request to list user followers completed";
 NSString *const PXRequestForUserFollowersListFailed = @"request to list user followers failed";
 
-NSString * const PXAuthenticationChangedNotification = @"500px authentication changed";
+NSString *const PXAuthenticationChangedNotification = @"500px authentication changed";
+NSString *const PXAuthenticationFailedNotification = @"500px authentication changed";
 
 @interface PXRequest () <NSURLConnectionDataDelegate>
 @end
@@ -178,8 +179,16 @@ static PXAPIHelper *apiHelper;
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDictionary *accessTokenDictionary = [apiHelper authenticate500pxUserName:userName password:password];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-            [PXRequest setAuthToken:[accessTokenDictionary valueForKey:@"oauth_token"] authSecret:[accessTokenDictionary valueForKey:@"oauth_token_secret"]];
+            if (accessTokenDictionary.allKeys.count > 0)
+            {
+                [PXRequest setAuthToken:[accessTokenDictionary valueForKey:@"oauth_token"] authSecret:[accessTokenDictionary valueForKey:@"oauth_token_secret"]];
+            }
+            else
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:PXAuthenticationFailedNotification object:nil];
+            }
         });
     });
 }

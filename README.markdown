@@ -27,4 +27,4 @@ Now that you're linking against the library, you're almost done! Wherever you wa
 
     #import <PXAPI/PXAPI.h>
 
-There are two ways to use this library. The first is to use the `PXAPIHelper` class methods to generate `NSURLRequest` objects to use directly (either with `NSURLConnection` or `[ASIHTTPRequest](https://github.com/pokeb/asi-http-request/tree)`. The other way is to use the built-in `PXRequest` class methods to create requests against the 500px API; they provide a completion block that is executed after the request returns, and they also post notifications to the default `NSNotificationCenter`.
+There are two ways to use this library. The first is to use the `PXAPIHelper` class methods to generate `NSURLRequest` objects to use directly (either with `NSURLConnection` or [`ASIHTTPRequest`](https://github.com/pokeb/asi-http-request/tree). The other way is to use the built-in `PXRequest` class methods to create requests against the 500px API; they provide a completion block that is executed after the request returns, and they also post notifications to the default `NSNotificationCenter`.

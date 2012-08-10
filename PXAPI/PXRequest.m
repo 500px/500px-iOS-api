@@ -556,20 +556,7 @@ static PXAPIHelper *apiHelper;
         NSError *passedOnError = error;
         
         if (error)
-        {
-            if (error.code == 400)
-            {
-                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissing userInfo:@{NSUnderlyingErrorKey : error}];
-            }
-            else if (error.code == 403)
-            {
-                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserHasBeenDisabled userInfo:@{NSUnderlyingErrorKey : error}];
-            }
-            else if (error.code == 404)
-            {
-                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
-            }
-            
+        {            
             [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
         }
         else

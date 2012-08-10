@@ -429,26 +429,186 @@ static PXAPIHelper *apiHelper;
 //Requires Authentication
 +(PXRequest *)requestToFavouritePhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestToFavouritePhoto:photoID];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeFavouriteWasRejected userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 +(PXRequest *)requestToUnFavouritePhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestToUnFavouritePhoto:photoID];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeFavouriteWasRejected userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 +(PXRequest *)requestToVoteForPhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestToVoteForPhoto:photoID];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeVoteWasRejected userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 +(PXRequest *)requestToComment:(NSString *)comment onPhoto:(NSInteger)photoID completion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestToComment:comment onPhoto:photoID];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeCommentWasMissing userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 

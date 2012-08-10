@@ -38,7 +38,10 @@ typedef enum : NSInteger
     PXRequestAPIDomainCodeUserHasBeenDisabledOrIsNotFollowingUser,
     //Photo Errors
     PXRequestAPIDomainCodePhotoDoesNotExist,
-    PXRequestAPIDomainCodePhotoWasDeletedOrUserWasDeactivated
+    PXRequestAPIDomainCodePhotoWasDeletedOrUserWasDeactivated,
+    PXRequestAPIDomainCodeCommentWasMissing,
+    PXRequestAPIDomainCodeVoteWasRejected,      //common reasons are: current user is inactive, has not completed their profile, is trying to vote on their own photo, or has already voted for the photo.
+    PXRequestAPIDomainCodeFavouriteWasRejected  //common reasons are: current user is inactive, has not completed their profile, or already has the photo in favorites list (or is not, and is trying to be removed).
 }PXRequestAPIDomainCode;
 
 extern NSString * const PXAuthenticationChangedNotification;

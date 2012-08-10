@@ -9,15 +9,42 @@
 #import <Foundation/Foundation.h>
 #import "PXAPIHelper.h"
 
-extern NSString * const PXRequestErrorConnectionDomain;
-extern NSString * const PXRequestErrorRequestDomain;
-extern NSString * const PXRequestAPIDomain;
+extern NSString *const PXRequestErrorConnectionDomain;
+extern NSString *const PXRequestErrorRequestDomain;
+extern NSString *const PXRequestAPIDomain;
 
-extern NSString * const PXRequestPhotosCompleted;
-extern NSString * const PXRequestPhotosFailed;
+extern NSString *const PXRequestPhotosCompleted;
+extern NSString *const PXRequestPhotosFailed;
 
-extern NSString * const PXRequestLoggedInUserCompleted;
-extern NSString * const PXRequestLoggedInUserFailed;
+extern NSString *const PXRequestPhotoDetailsCompleted;
+extern NSString *const PXRequestPhotoDetailsFailed;
+
+extern NSString *const PXRequestLoggedInUserCompleted;
+extern NSString *const PXRequestLoggedInUserFailed;
+
+extern NSString *const PXRequestUserDetailsCompleted;
+extern NSString *const PXRequestUserDetailsFailed;
+
+extern NSString *const PXRequestToFavouritePhotoCompleted;
+extern NSString *const PXRequestToFavouritePhotoFailed;
+
+extern NSString *const PXRequestToVoteForPhotoCompleted;
+extern NSString *const PXRequestToVoteForPhotoFailed;
+
+extern NSString *const PXRequestToCommentOnPhotoCompleted;
+extern NSString *const PXRequestToCommentOnPhotoFailed;
+
+extern NSString *const PXRequestSearchCompleted;
+extern NSString *const PXRequestSearchFailed;
+
+extern NSString *const PXRequestToFollowUserCompleted;
+extern NSString *const PXRequestToFollowUserFailed;
+
+extern NSString *const PXRequestForUserFollowingListCompleted;
+extern NSString *const PXRequestForUserFollowingListFailed;
+
+extern NSString *const PXRequestForUserFollowersListCompleted;
+extern NSString *const PXRequestForUserFollowersListFailed;
 
 typedef enum : NSInteger
 {
@@ -64,6 +91,7 @@ typedef enum : NSInteger
 
 +(void)setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret;
 +(void)authenticateWithUserName:(NSString *)userName password:(NSString *)password;
++(void)removeUserAuthentication;
 +(void)setAuthToken:(NSString *)authToken authSecret:(NSString *)authSecret;
 
 -(void)cancel;

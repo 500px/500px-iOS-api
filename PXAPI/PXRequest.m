@@ -20,6 +20,33 @@ NSString * const PXRequestPhotosFailed = @"photos failed";
 NSString * const PXRequestLoggedInUserCompleted = @"logged in user request completed";
 NSString * const PXRequestLoggedInUserFailed = @"logged in user request failed";
 
+NSString * const PXRequestUserDetailsCompleted = @"logged in user request completed";
+NSString * const PXRequestUserDetailsFailed = @"logged in user request failed";
+
+NSString *const PXRequestPhotoDetailsCompleted = @"photo details completed";
+NSString *const PXRequestPhotoDetailsFailed = @"photo details request failed";
+
+NSString *const PXRequestToFavouritePhotoCompleted = @"request to favourite photo completed";
+NSString *const PXRequestToFavouritePhotoFailed = @"request to favourite photo failed";
+
+NSString *const PXRequestToVoteForPhotoCompleted = @"request to vote for photo completed";
+NSString *const PXRequestToVoteForPhotoFailed = @"request to vote for photo failed";
+
+NSString *const PXRequestToCommentOnPhotoCompleted = @"request to comment on photo completed";
+NSString *const PXRequestToCommentOnPhotoFailed = @"request to comment on photo failed";
+
+NSString *const PXRequestSearchCompleted = @"search completed";
+NSString *const PXRequestSearchFailed = @"search failed";
+
+NSString *const PXRequestToFollowUserCompleted = @"request to follow user completed";
+NSString *const PXRequestToFollowUserFailed = @"request to follow user failed";
+
+NSString *const PXRequestForUserFollowingListCompleted = @"request to list user following completed";
+NSString *const PXRequestForUserFollowingListFailed = @"request to list user following failed";
+
+NSString *const PXRequestForUserFollowersListCompleted = @"request to list user followers completed";
+NSString *const PXRequestForUserFollowersListFailed = @"request to list user followers failed";
+
 NSString * const PXAuthenticationChangedNotification = @"500px authentication changed";
 
 @interface PXRequest () <NSURLConnectionDataDelegate>
@@ -156,6 +183,11 @@ static PXAPIHelper *apiHelper;
     });
 }
 
++(void)removeUserAuthentication
+{
+    [PXRequest setAuthToken:nil authSecret:nil];
+}
+
 +(void)setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret
 {
     apiHelper = [[PXAPIHelper alloc] initWithHost:nil consumerKey:consumerKey consumerSecret:consumerSecret];
@@ -163,8 +195,16 @@ static PXAPIHelper *apiHelper;
 
 +(void)setAuthToken:(NSString *)authToken authSecret:(NSString *)authSecret
 {
-    [apiHelper setAuthModeToOAuthWithAuthToken:authToken authSecret:authSecret];
-    [[NSNotificationCenter defaultCenter] postNotificationName:PXAuthenticationChangedNotification object:nil];
+    if (authToken && authSecret)
+    {
+        [apiHelper setAuthModeToOAuthWithAuthToken:authToken authSecret:authSecret];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PXAuthenticationChangedNotification object:@(YES)];
+    }
+    else
+    {
+        [apiHelper setAuthModeToNoAuth];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PXAuthenticationChangedNotification object:@(NO)];
+    }
 }
 
 #pragma mark - NSURLConnectionDelegate Methods
@@ -456,11 +496,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFavouritePhotoFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFavouritePhotoCompleted object:results];
         }
         
         if (completionBlock)
@@ -503,11 +543,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFavouritePhotoFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFavouritePhotoCompleted object:results];
         }
         
         if (completionBlock)
@@ -550,11 +590,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToVoteForPhotoFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToVoteForPhotoCompleted object:results];
         }
         
         if (completionBlock)
@@ -593,11 +633,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToCommentOnPhotoFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToCommentOnPhotoCompleted object:results];
         }
         
         if (completionBlock)
@@ -652,11 +692,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoWasDeletedOrUserWasDeactivated userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotoDetailsFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotoDetailsCompleted object:results];
         }
         
         if (completionBlock)
@@ -716,11 +756,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchCompleted object:results];
         }
         
         if (completionBlock)
@@ -776,11 +816,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchCompleted object:results];
         }
         
         if (completionBlock)
@@ -824,7 +864,7 @@ static PXAPIHelper *apiHelper;
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:results];
         }
         
         if (completionBlock)
@@ -867,11 +907,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestUserDetailsCompleted object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestUserDetailsFailed object:results];
         }
         
         if (completionBlock)
@@ -914,11 +954,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestUserDetailsFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestUserDetailsCompleted object:results];
         }
         
         if (completionBlock)
@@ -961,11 +1001,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestUserDetailsFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestUserDetailsCompleted object:results];
         }
         
         if (completionBlock)
@@ -1001,11 +1041,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchCompleted object:results];
         }
         
         if (completionBlock)
@@ -1051,11 +1091,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestForUserFollowingListFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestForUserFollowingListCompleted object:results];
         }
         
         if (completionBlock)
@@ -1099,11 +1139,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestForUserFollowersListFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestForUserFollowersListCompleted object:results];
         }
         
         if (completionBlock)
@@ -1149,11 +1189,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFollowUserFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFollowUserCompleted object:results];
         }
         
         if (completionBlock)
@@ -1198,11 +1238,11 @@ static PXAPIHelper *apiHelper;
                 passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeUserDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
             }
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFollowUserFailed object:passedOnError];
         }
         else
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToFollowUserCompleted object:results];
         }
         
         if (completionBlock)

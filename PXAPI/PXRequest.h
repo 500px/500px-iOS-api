@@ -57,7 +57,6 @@ typedef enum : NSInteger
 +(void)authenticateWithUserName:(NSString *)userName password:(NSString *)password;
 +(void)setAuthToken:(NSString *)authToken authSecret:(NSString *)authSecret;
 
--(void)start;
 -(void)cancel;
 
 #pragma mark - Convenience methods for access 500px API

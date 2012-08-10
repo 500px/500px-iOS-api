@@ -26,6 +26,8 @@ NSString * const PXAuthenticationChangedNotification = @"500px authentication ch
 {
     NSURLConnection *urlConnection;
     NSMutableData *connectionMutableData;
+    
+    PXRequestCompletionBlock completionBlock;
 }
 
 static NSMutableSet *inProgressRequestsMutableSet;
@@ -33,7 +35,6 @@ static dispatch_queue_t inProgressRequestsMutableSetAccessQueue;
 static PXAPIHelper *apiHelper;
 
 @synthesize urlRequest = _urlRequest;
-@synthesize completionBlock = _completionBlock;
 @synthesize requestStatus = _requestStatus;
 
 +(void)initialize
@@ -42,21 +43,25 @@ static PXAPIHelper *apiHelper;
     dispatch_once(&onceToken, ^{
         inProgressRequestsMutableSet = [NSMutableSet set];
         inProgressRequestsMutableSetAccessQueue = dispatch_queue_create("com.inProgressRequestsMutableSetSetAccessQueue", DISPATCH_QUEUE_SERIAL);
-        apiHelper = [[PXAPIHelper alloc] initWithHost:nil consumerKey:kPXConsumerKey consumerSecret:kPXConsumerSecret];
     });
 }
 
 #pragma mark - Private Instance Methods
 
--(id)initWithURLRequest:(NSURLRequest *)urlRequest completion:(PXRequestCompletionBlock)completionBlock
+-(id)initWithURLRequest:(NSURLRequest *)urlRequest completion:(PXRequestCompletionBlock)completion
 {
     if (!(self = [super init])) return nil;
     
     _urlRequest = urlRequest;
-    _completionBlock = [completionBlock copy];
+    completionBlock = [completion copy];
     _requestStatus = PXRequestStatusNotStarted;
     
     return self;
+}
+
+-(void)dealloc
+{
+    
 }
 
 #pragma mark - Public Instance Methods
@@ -67,7 +72,11 @@ static PXAPIHelper *apiHelper;
     
     connectionMutableData = [NSMutableData data];
     
-    urlConnection = [[NSURLConnection alloc] initWithRequest:self.urlRequest delegate:self startImmediately:YES];
+    urlConnection = [[NSURLConnection alloc] initWithRequest:self.urlRequest delegate:self];
+    [urlConnection scheduleInRunLoop:[NSRunLoop mainRunLoop]
+                          forMode:NSDefaultRunLoopMode];
+    
+    [urlConnection start];
     
     [PXRequest addRequestToInProgressMutableSet:self];
 }
@@ -77,12 +86,12 @@ static PXAPIHelper *apiHelper;
     [urlConnection cancel];
     _requestStatus = PXRequestStatusCancelled;
     
-    if (self.completionBlock)
+    if (completionBlock)
     {
         NSError *error = [NSError errorWithDomain:PXRequestErrorRequestDomain
                                              code:PXRequestStatusCancelled
                                          userInfo:nil];
-        self.completionBlock(nil, error);
+        completionBlock(nil, error);
     }
     
     [PXRequest removeRequestFromInProgressMutableSet:self];
@@ -118,6 +127,11 @@ static PXAPIHelper *apiHelper;
     });
 }
 
++(void)setConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret
+{
+    apiHelper = [[PXAPIHelper alloc] initWithHost:nil consumerKey:consumerKey consumerSecret:consumerSecret];
+}
+
 +(void)setAuthToken:(NSString *)authToken authSecret:(NSString *)authSecret
 {
     [apiHelper setAuthModeToOAuthWithAuthToken:authToken authSecret:authSecret];
@@ -129,9 +143,9 @@ static PXAPIHelper *apiHelper;
 {
     NSLog(@"PXRequest to %@ failed with error: %@", self.urlRequest.URL, error);
     _requestStatus = PXRequestStatusFailed;
-    if (self.completionBlock)
+    if (completionBlock)
     {
-        self.completionBlock(nil, error);
+        completionBlock(nil, error);
     }
     [PXRequest removeRequestFromInProgressMutableSet:self];
 }
@@ -145,12 +159,12 @@ static PXAPIHelper *apiHelper;
         [connection cancel];
         _requestStatus = PXRequestStatusFailed;
         
-        if (self.completionBlock)
+        if (completionBlock)
         {
             NSError *error = [NSError errorWithDomain:PXRequestErrorConnectionDomain
                                                  code:httpResponse.statusCode
                                              userInfo:@{ NSURLErrorKey : self.urlRequest.URL}];
-            self.completionBlock(nil, error);
+            completionBlock(nil, error);
         }
         
         [PXRequest removeRequestFromInProgressMutableSet:self];
@@ -168,9 +182,9 @@ static PXAPIHelper *apiHelper;
     
     NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:connectionMutableData options:0 error:nil];
     
-    if (self.completionBlock)
+    if (completionBlock)
     {
-        self.completionBlock(responseDictionary, nil);
+        completionBlock(responseDictionary, nil);
     }
     
     [PXRequest removeRequestFromInProgressMutableSet:self];
@@ -179,46 +193,46 @@ static PXAPIHelper *apiHelper;
 
 #pragma mark - Convenience methods for access 500px API
 
-+(void)requestForPhotos:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotosWithCompletion:(PXRequestCompletionBlock)completionBlock
 {
-    [self requestForPhotoFeature:kPXAPIHelperDefaultFeature completion:completionBlock];
+    return [self requestForPhotoFeature:kPXAPIHelperDefaultFeature completion:completionBlock];
 }
 
-+(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature completion:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature completion:(PXRequestCompletionBlock)completionBlock
 {
-    [self requestForPhotoFeature:photoFeature resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
+    return [self requestForPhotoFeature:photoFeature resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
 }
 
-+(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
 {
-    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:1 completion:completionBlock];
+    return [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:1 completion:completionBlock];
 }
 
-+(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page completion:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page completion:(PXRequestCompletionBlock)completionBlock
 {
-    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
+    return [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
 }
 
-+(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
 {
-    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder completion:completionBlock];
+    return [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder completion:completionBlock];
 }
 
-+(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder completion:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder completion:(PXRequestCompletionBlock)completionBlock
 {
-    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+    return [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
 }
 
-+(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
 {
-    [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+    return [self requestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory completion:completionBlock];
 }
 
-+(void)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory completion:(PXRequestCompletionBlock)completionBlock
++(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory completion:(PXRequestCompletionBlock)completionBlock
 {
     NSURLRequest *urlRequest = [apiHelper urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:includedCategory];
     
-    [[[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
         if (error)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotosFailed object:error];
@@ -232,7 +246,11 @@ static PXAPIHelper *apiHelper;
         {
             completionBlock(results, error);
         }
-    }] start];
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 @end

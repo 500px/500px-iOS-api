@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5E58B42015D55DAB00C8DC84 /* PXRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58B41F15D55DAB00C8DC84 /* PXRequest.m */; };
 		5E58B42115D55DAB00C8DC84 /* PXRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58B41F15D55DAB00C8DC84 /* PXRequest.m */; };
+		5E58B50815D5794800C8DC84 /* PXAPIHelper+Auth.h in Headers */ = {isa = PBXBuildFile; fileRef = 5EA2500B15CEC1B7000592BB /* PXAPIHelper+Auth.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5E58B50915D5794B00C8DC84 /* PXRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E58B41E15D55DAB00C8DC84 /* PXRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5E58B50A15D5794D00C8DC84 /* PXAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E58B43215D567C400C8DC84 /* PXAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5E5E4EE215CF03FA003F053A /* PXAuthTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE115CF03FA003F053A /* PXAuthTests.m */; };
 		5E5E4EE415CF05C3003F053A /* PXAPIHelper+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */; };
 		5E5E4EE715CF07FE003F053A /* PXAuthenticatedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE615CF07FE003F053A /* PXAuthenticatedTests.m */; };
@@ -23,7 +26,7 @@
 		5EA2502215CECB79000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EA2502315CECB79000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EB9AFC815C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
-		5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */; };
+		5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 		5EB9AFD715C34F3F002E7F6D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */; };
 		5EB9AFDA15C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
@@ -50,7 +53,6 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
-				5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +211,20 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		5E58B50715D5791600C8DC84 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E58B50A15D5794D00C8DC84 /* PXAPI.h in Headers */,
+				5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in Headers */,
+				5E58B50815D5794800C8DC84 /* PXAPIHelper+Auth.h in Headers */,
+				5E58B50915D5794B00C8DC84 /* PXRequest.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		5EB9AFC315C34F3F002E7F6D /* PXAPI */ = {
 			isa = PBXNativeTarget;
@@ -217,6 +233,7 @@
 				5EB9AFC015C34F3F002E7F6D /* Sources */,
 				5EB9AFC115C34F3F002E7F6D /* Frameworks */,
 				5EB9AFC215C34F3F002E7F6D /* CopyFiles */,
+				5E58B50715D5791600C8DC84 /* Headers */,
 			);
 			buildRules = (
 			);

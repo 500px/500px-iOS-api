@@ -26,7 +26,6 @@
 		5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */; };
 		5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 		5EB9AFD715C34F3F002E7F6D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */; };
-		5EB9AFD915C34F3F002E7F6D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFD815C34F3F002E7F6D /* UIKit.framework */; };
 		5EB9AFDA15C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
 		5EB9AFDD15C34F3F002E7F6D /* libPXAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC415C34F3F002E7F6D /* libPXAPI.a */; };
 		5EB9AFE315C34F3F002E7F6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE115C34F3F002E7F6D /* InfoPlist.strings */; };
@@ -86,7 +85,6 @@
 		5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PXAPIHelper.m; sourceTree = "<group>"; };
 		5EB9AFD515C34F3F002E7F6D /* tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		5EB9AFD815C34F3F002E7F6D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5EB9AFE015C34F3F002E7F6D /* PXAPITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PXAPITests-Info.plist"; sourceTree = "<group>"; };
 		5EB9AFE215C34F3F002E7F6D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5EB9AFE415C34F3F002E7F6D /* PXTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PXTests.h; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EB9AFD715C34F3F002E7F6D /* SenTestingKit.framework in Frameworks */,
-				5EB9AFD915C34F3F002E7F6D /* UIKit.framework in Frameworks */,
 				5EB9AFDA15C34F3F002E7F6D /* Foundation.framework in Frameworks */,
 				5EB9AFDD15C34F3F002E7F6D /* libPXAPI.a in Frameworks */,
 			);
@@ -153,7 +150,6 @@
 			children = (
 				5EB9AFC715C34F3F002E7F6D /* Foundation.framework */,
 				5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */,
-				5EB9AFD815C34F3F002E7F6D /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

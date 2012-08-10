@@ -32,6 +32,8 @@
     
     self.detailImageView.image = nil;
     
+    self.navigationItem.title = [self.detailItem valueForKeyPath:@"name"];
+    
     if (self.detailItem) {
         NSString *itemURLString = [[[self.detailItem valueForKey:@"images"] lastObject] valueForKey:@"url"];
         

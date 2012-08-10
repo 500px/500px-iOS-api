@@ -23,6 +23,10 @@ Now that the subproject is added, we need to link against it. Expand the subproj
 
 ![Drag and drop the library to be linked against](http://ashfurrow.com/500px-iOS-api/linking.png)
 
+Under "Build Settings", add an additional Linker flag of `-ObjC`.
+
+![Additional linker flag](http://ashfurrow.com/500px-iOS-api/linkerflag.png)
+
 Now that you're linking against the library, you're almost done! Wherever you want to use the 500px API, make sure you import the `PXAPIHelper.h` file:
 
     #import <PXAPI/PXAPI.h>

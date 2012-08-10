@@ -10,7 +10,7 @@
 
 @class PXDetailViewController;
 
-@interface PXMasterViewController : UITableViewController
+@interface PXMasterViewController : UITableViewController <UIAlertViewDelegate>
 
 @property (strong, nonatomic) PXDetailViewController *detailViewController;
 

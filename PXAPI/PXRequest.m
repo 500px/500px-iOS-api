@@ -27,7 +27,7 @@ NSString * const PXAuthenticationChangedNotification = @"500px authentication ch
     NSURLConnection *urlConnection;
     NSMutableData *connectionMutableData;
     
-    PXRequestCompletionBlock completionBlock;
+    PXRequestCompletionBlock requestCompletionBlock;
 }
 
 static NSMutableSet *inProgressRequestsMutableSet;
@@ -53,7 +53,7 @@ static PXAPIHelper *apiHelper;
     if (!(self = [super init])) return nil;
     
     _urlRequest = urlRequest;
-    completionBlock = [completion copy];
+    requestCompletionBlock = [completion copy];
     _requestStatus = PXRequestStatusNotStarted;
     
     return self;
@@ -86,12 +86,12 @@ static PXAPIHelper *apiHelper;
     [urlConnection cancel];
     _requestStatus = PXRequestStatusCancelled;
     
-    if (completionBlock)
+    if (requestCompletionBlock)
     {
         NSError *error = [NSError errorWithDomain:PXRequestErrorRequestDomain
                                              code:PXRequestStatusCancelled
                                          userInfo:nil];
-        completionBlock(nil, error);
+        requestCompletionBlock(nil, error);
     }
     
     [PXRequest removeRequestFromInProgressMutableSet:self];
@@ -119,6 +119,12 @@ static PXAPIHelper *apiHelper;
 #pragma mark - Public Class Methods
 +(void)authenticateWithUserName:(NSString *)userName password:(NSString *)password
 {
+    if (!apiHelper)
+    {
+        NSLog(@"Error: consumer key and secret not specified.");
+        return;
+    }
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDictionary *accessTokenDictionary = [apiHelper authenticate500pxUserName:userName password:password];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -143,10 +149,12 @@ static PXAPIHelper *apiHelper;
 {
     NSLog(@"PXRequest to %@ failed with error: %@", self.urlRequest.URL, error);
     _requestStatus = PXRequestStatusFailed;
-    if (completionBlock)
+    
+    if (requestCompletionBlock)
     {
-        completionBlock(nil, error);
+        requestCompletionBlock(nil, error);
     }
+    
     [PXRequest removeRequestFromInProgressMutableSet:self];
 }
 
@@ -159,12 +167,12 @@ static PXAPIHelper *apiHelper;
         [connection cancel];
         _requestStatus = PXRequestStatusFailed;
         
-        if (completionBlock)
+        if (requestCompletionBlock)
         {
             NSError *error = [NSError errorWithDomain:PXRequestErrorConnectionDomain
                                                  code:httpResponse.statusCode
                                              userInfo:@{ NSURLErrorKey : self.urlRequest.URL}];
-            completionBlock(nil, error);
+            requestCompletionBlock(nil, error);
         }
         
         [PXRequest removeRequestFromInProgressMutableSet:self];
@@ -182,9 +190,9 @@ static PXAPIHelper *apiHelper;
     
     NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:connectionMutableData options:0 error:nil];
     
-    if (completionBlock)
+    if (requestCompletionBlock)
     {
-        completionBlock(responseDictionary, nil);
+        requestCompletionBlock(responseDictionary, nil);
     }
     
     [PXRequest removeRequestFromInProgressMutableSet:self];
@@ -230,6 +238,18 @@ static PXAPIHelper *apiHelper;
 
 +(PXRequest *)requestForPhotoFeature:(PXAPIHelperPhotoFeature)photoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory completion:(PXRequestCompletionBlock)completionBlock
 {
+    if (!apiHelper)
+    {
+        NSLog(@"Error: consumer key and secret not specified.");
+        
+        if (completionBlock)
+        {
+            completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeNoConsumerKeyAndSecret userInfo:@{ NSLocalizedDescriptionKey : @"No Consumer Key and Consumer Secret were specified before using PXRequest." }]);
+        }
+        
+        return nil;
+    }
+
     NSURLRequest *urlRequest = [apiHelper urlRequestForPhotoFeature:photoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:includedCategory];
     
     PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
@@ -252,5 +272,152 @@ static PXAPIHelper *apiHelper;
     
     return request;
 }
+
+#pragma mark Specific Users
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserID:userID userFeature:kPXAPIHelperDefaultUserPhotoFeature completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserID:(NSInteger)userID userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory completion:(PXRequestCompletionBlock)completionBlock
+{   
+    if (!apiHelper)
+    {
+        NSLog(@"Error: consumer key and secret not specified");
+        
+        if (completionBlock)
+        {
+            completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeNoConsumerKeyAndSecret userInfo:@{ NSLocalizedDescriptionKey : @"No Consumer Key and Consumer Secret were specified before using PXRequest." }]);
+        }
+        
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestForPhotosOfUserID:userID userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:includedCategory];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        if (error)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotosFailed object:error];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotosCompleted object:results];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, error);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserName:userName userFeature:kPXAPIHelperDefaultUserPhotoFeature completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:kPXAPIHelperDefaultSortOrder completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestForPhotosOfUserName:(NSString *)userName userFeature:(PXAPIHelperUserPhotoFeature)userPhotoFeature resultsPerPage:(NSInteger)resultsPerPage page:(NSInteger)page photoSizes:(PXPhotoModelSize)photoSizesMask sortOrder:(PXAPIHelperSortOrder)sortOrder except:(PXPhotoModelCategory)excludedCategory only:(PXPhotoModelCategory)includedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    if (!apiHelper)
+    {
+        NSLog(@"Error: consumer key and secret not specified");
+        
+        if (completionBlock)
+        {
+            completionBlock(nil, [NSError errorWithDomain:PXRequestErrorRequestDomain code:PXRequestErrorCodeNoConsumerKeyAndSecret userInfo:@{ NSLocalizedDescriptionKey : @"No Consumer Key and Consumer Secret were specified before using PXRequest." }]);
+        }
+        
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestForPhotosOfUserName:userName userFeature:userPhotoFeature resultsPerPage:resultsPerPage page:page photoSizes:photoSizesMask sortOrder:sortOrder except:excludedCategory only:includedCategory];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        if (error)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotosFailed object:error];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestPhotosCompleted object:results];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, error);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
+}
+
 
 @end

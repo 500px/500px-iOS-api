@@ -30,7 +30,9 @@ typedef enum : NSInteger
 {
     PXRequestAPIDomainCodeRequiredParametersWereMissing = 0,
     PXRequestAPIDomainCodeUserHasBeenDisabled,
-    PXRequestAPIDomainCodeUserDoesNotExist
+    PXRequestAPIDomainCodeUserDoesNotExist,
+    PXRequestAPIDomainCodeUserHasBeenDisabledOrIsAlreadyFollowingUser,
+    PXRequestAPIDomainCodeUserHasBeenDisabledOrIsNotFollowingUser
 }PXRequestAPIDomainCode;
 
 extern NSString * const PXAuthenticationChangedNotification;

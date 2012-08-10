@@ -469,8 +469,45 @@ static PXAPIHelper *apiHelper;
 
 +(PXRequest *)requestForPhotoID:(NSInteger)photoID photoSizes:(PXPhotoModelSize)photoSizesMask commentsPage:(NSInteger)commentPage completion:(PXRequestCompletionBlock)completionBlock
 {
-#warning Unimplemented
-    return nil;
+    if (!apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [apiHelper urlRequestForPhotoID:photoID photoSizes:photoSizesMask commentsPage:commentPage];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoWasDeletedOrUserWasDeactivated userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestLoggedInUserCompleted object:nil];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
 }
 
 
@@ -506,7 +543,7 @@ static PXAPIHelper *apiHelper;
         return nil;
     }
     
-    NSURLRequest *urlRequest = [apiHelper urlRequestForSearchTerm:searchTermb page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
+    NSURLRequest *urlRequest = [apiHelper urlRequestForSearchTerm:searchTerm page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
     
     PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
         

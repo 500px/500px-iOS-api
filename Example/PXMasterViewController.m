@@ -32,19 +32,22 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [PXRequest setConsumerKey:@"__CHANGE_ME__" consumerSecret:@"__CHANGE_ME__"];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     [PXRequest requestForPhotosWithCompletion:^(NSDictionary *results, NSError *error) {
-        [self setNewObjects:[results valueForKey:@"photos"]];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        if (results)
+        {
+            [self setNewObjects:[results valueForKey:@"photos"]];
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Log in" style:UIBarButtonItemStyleBordered target:self action:@selector(login)];
+        }
     }];
-    
 }
 
 - (void)viewDidUnload
@@ -62,6 +65,29 @@
 {
     _objects = [NSMutableArray arrayWithArray:objects];
     [self.tableView reloadData];
+}
+
+#pragma mark - Custom Methods
+-(void)login
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"500px Login" message:@"Enter in your 500px login credentials" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+    alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    [alert show];
+}
+
+-(void)userDidLogin:(NSNotification *)notification
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    
+    if ([notification.object boolValue])
+    {
+        self.navigationItem.leftBarButtonItem = nil;
+        
+        [PXRequest requestForCurrentlyLoggedInUserWithCompletion:^(NSDictionary *results, NSError *error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Hello, %@", [results valueForKeyPath:@"user.firstname"]] message:@"Welcome to the World's Best Photography." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"YEAH!", nil];
+            [alert show];
+    }];
+    }
 }
 
 #pragma mark - Table View
@@ -86,7 +112,6 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-
 
     NSDate *object = [_objects objectAtIndex:indexPath.row];
     cell.textLabel.text = [object valueForKey:@"name"];
@@ -133,6 +158,18 @@
     NSDate *object = [_objects objectAtIndex:indexPath.row];
     self.detailViewController.detailItem = object;
     [self.navigationController pushViewController:self.detailViewController animated:YES];
+}
+
+#pragma mark - UIAlertViewDelegate Methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *userName = [[alertView textFieldAtIndex:0] text];
+    NSString *password = [[alertView textFieldAtIndex:1] text];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogin:) name:PXAuthenticationChangedNotification object:nil];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [PXRequest authenticateWithUserName:userName password:password];
 }
 
 @end

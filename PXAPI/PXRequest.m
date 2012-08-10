@@ -11,17 +11,18 @@
 
 #import "PXAPI.h"
 
-NSString * const PXRequestErrorConnectionDomain = @"connection error";
-NSString * const PXRequestErrorRequestDomain = @"request cancelled";
+NSString *const PXRequestErrorConnectionDomain = @"connection error";
+NSString *const PXRequestErrorRequestDomain = @"request cancelled";
+NSString *const PXRequestAPIDomain = @"api error";
 
-NSString * const PXRequestPhotosCompleted = @"photos returned";
-NSString * const PXRequestPhotosFailed = @"photos failed";
+NSString *const PXRequestPhotosCompleted = @"photos returned";
+NSString *const PXRequestPhotosFailed = @"photos failed";
 
-NSString * const PXRequestLoggedInUserCompleted = @"logged in user request completed";
-NSString * const PXRequestLoggedInUserFailed = @"logged in user request failed";
+NSString *const PXRequestLoggedInUserCompleted = @"logged in user request completed";
+NSString *const PXRequestLoggedInUserFailed = @"logged in user request failed";
 
-NSString * const PXRequestUserDetailsCompleted = @"logged in user request completed";
-NSString * const PXRequestUserDetailsFailed = @"logged in user request failed";
+NSString *const PXRequestUserDetailsCompleted = @"logged in user request completed";
+NSString *const PXRequestUserDetailsFailed = @"logged in user request failed";
 
 NSString *const PXRequestPhotoDetailsCompleted = @"photo details completed";
 NSString *const PXRequestPhotoDetailsFailed = @"photo details request failed";

@@ -31,4 +31,10 @@ Now that you're linking against the library, you're almost done! Wherever you wa
 
     #import <PXAPI/PXAPI.h>
 
+In your application delegate's `application:didFinishLaunchingWithOptions:` method, add this line to set your consumer key and consumer secret:
+
+    [PXRequest setConsumerKey:@"__CHANGE_ME__" consumerSecret:@"__CHANGE_ME__"];
+
+Got to the [500px Applications Page](http://500px.com/settings/applications?from=developers) to register for your consumer key and secret.
+
 There are two ways to use this library. The first is to use the `PXAPIHelper` class methods to generate `NSURLRequest` objects to use directly (either with `NSURLConnection` or [`ASIHTTPRequest`](https://github.com/pokeb/asi-http-request/tree). The other way is to use the built-in `PXRequest` class methods to create requests against the 500px API; they provide a completion block that is executed after the request returns, and they also post notifications to the default `NSNotificationCenter`.

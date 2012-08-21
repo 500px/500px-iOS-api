@@ -2,8 +2,6 @@ Writing a wrapper for the 500px API in Objective-C to make it easier for develop
 
 Stil a work in progress; I'm only working on this in my spare time. It currently supports reading from the 500px API and retrieving photos, users, favourites, followers, etc. Check out the [API Documentation](https://github.com/500px/api-documentation) for more information.
 
-Eventually, I'll be creating a wrapping layer so you don't have to deal with `NSURLRequest` instances at all.
-
 ## Requirements
 
 This project requires LLVM 4.0+ and Xcode 4.4+, and is compiled with ARC. 

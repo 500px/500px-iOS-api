@@ -11,7 +11,7 @@ This project requires LLVM 4.0+ and Xcode 4.4+, and is compiled with ARC.
 Go to your Xocde project directory and type the following:
 
     git submodule init
-    git submodule add git://github.com/AshFurrow/500px-iOS-api.git
+    git submodule add git://github.com/500px/500px-iOS-api.git
 
 Once the submodule has finished downloading, drag and drop the new Xcode project into your existing project.
 

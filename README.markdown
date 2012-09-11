@@ -25,6 +25,8 @@ Under "Build Settings", add an additional Linker flag of `-ObjC`.
 
 ![Additional linker flag](http://static.ashfurrow.com.s3.amazonaws.com/github/linkerflag.png)
 
+Also in your project's build settings, find "Header Search Paths" and add `$(SRCROOT)` and check the box indicating a recurisve search.
+
 Now that you're linking against the library, you're almost done! Wherever you want to use the 500px API, make sure you import the `PXAPIHelper.h` file:
 
     #import <PXAPI/PXAPI.h>

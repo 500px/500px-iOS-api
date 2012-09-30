@@ -556,12 +556,7 @@
         for (id key in options.allKeys) {
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
         }
-        
-        for (id key in options.allKeys)
-        {
-            [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
-        }
-        
+                
         for (NSString *imageSizeString in imageSizeArray)
         {
             [urlString appendFormat:@"&image_size[]=%@", imageSizeString];

@@ -31,6 +31,8 @@ Now that you're linking against the library, you're almost done! Wherever you wa
 
 Also in your project's build settings, find "Header Search Paths" and add `$(SRCROOT)` and check the box indicating a recurisve search.
 
+**NOTE**: If the path to your project contains spaces, you *must* put `$(SRCROOT)` (and all other custom search paths) in quotes.
+
 ![Header Search Path](http://static.ashfurrow.com/github/headerpath.png)
 
 In your application delegate's `application:didFinishLaunchingWithOptions:` method, add this line to set your consumer key and consumer secret:

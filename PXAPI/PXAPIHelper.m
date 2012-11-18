@@ -1185,4 +1185,36 @@
     return [self urlRequestToChangeFollowStatus:userToUnFollowID method:@"DELETE"];
 }
 
+-(NSURLRequest *)urlRequestForPhotoUpload:(NSData *)imageData fileName:(NSString *)name photoName:(NSString *)photoName descirption:(NSString *)description category:(PXPhotoModelCategory) category {
+    if (self.authMode == PXAPIHelperModeNoAuth) return nil;
+
+    NSString *urlString = [NSString stringWithFormat:@"%@/photos/upload?name=%@&description=%@&category=%d", self.host, photoName, description, category];
+
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [mutableRequest setHTTPMethod:@"POST"];
+
+    NSString *POSTBoundary = @"0xKhTmLb0uNdArY";
+    [mutableRequest addValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", POSTBoundary] forHTTPHeaderField:@"Content-Type"];
+
+    NSMutableData *body = [NSMutableData data];
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", POSTBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+
+    [body appendData:[@"Content-Type: image/jpeg; name=\"file\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Transfer-Encoding: binary\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-ID: <file>\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@\"\r\n", name] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Location: file\r\n\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+
+    [body appendData:imageData];
+
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", POSTBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+
+    NSString *accessTokenAuthHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", body, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+
+    [mutableRequest setValue:accessTokenAuthHeader forHTTPHeaderField:@"Authorization"];
+    [mutableRequest setHTTPBody:body];
+
+    return mutableRequest;
+}
+
 @end

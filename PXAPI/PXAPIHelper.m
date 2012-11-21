@@ -1200,12 +1200,12 @@
     return [self urlRequestToChangeFollowStatus:userToUnFollowID method:@"DELETE"];
 }
 
--(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName descirption:(NSString *)photoDescription
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName description:(NSString *)photoDescription
 {
-    return [self urlRequestToUploadPhoto:imageData photoName:photoName descirption:photoDescription category:PXAPIHelperUnspecifiedCategory];
+    return [self urlRequestToUploadPhoto:imageData photoName:photoName description:photoDescription category:PXAPIHelperUnspecifiedCategory];
 }
 
--(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName descirption:(NSString *)photoDescription category:(PXPhotoModelCategory)photoCategory
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName description:(NSString *)photoDescription category:(PXPhotoModelCategory)photoCategory
 {
     if (self.authMode == PXAPIHelperModeNoAuth) return nil;
     

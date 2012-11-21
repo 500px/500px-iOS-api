@@ -201,7 +201,7 @@ typedef enum : NSInteger
 
 #pragma mark - Photo Upload
 
--(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName descirption:(NSString *)photoDescription;
--(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName descirption:(NSString *)photoDescription category:(PXPhotoModelCategory) category;
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName description:(NSString *)photoDescription;
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName description:(NSString *)photoDescription category:(PXPhotoModelCategory) category;
 
 @end

@@ -1037,7 +1037,7 @@
         return nil;
     }
     
-    NSURLRequest *urlRequest = [self.apiHelper urlRequestToUploadPhoto:imageData photoName:photoName descirption:photoDescription category:photoCategory];
+    NSURLRequest *urlRequest = [self.apiHelper urlRequestToUploadPhoto:imageData photoName:photoName description:photoDescription category:photoCategory];
     
     PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
         

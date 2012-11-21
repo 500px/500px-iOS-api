@@ -10,6 +10,21 @@
 #import "OAuthCore.h"
 #import "OAuth+Additions.h"
 
+@interface NSString (PXURLEncoding)
+
+-(NSString *)px_urlEncode;
+
+@end
+
+@implementation NSString (PXURLEncoding)
+
+-(NSString *)px_urlEncode
+{
+    return (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+}
+
+@end
+
 @implementation PXAPIHelper
 {
     PXAPIHelperMode authMode;
@@ -888,7 +903,7 @@
     }
     else if (self.authMode == PXAPIHelperModeOAuth)
     {
-        NSString *urlString = [NSString stringWithFormat:@"%@/photos/search",self.host];
+        NSString *urlString = [NSString stringWithFormat:@"%@/photos/search", self.host];
         mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
         [mutableRequest setHTTPMethod:@"GET"];
         
@@ -1185,32 +1200,45 @@
     return [self urlRequestToChangeFollowStatus:userToUnFollowID method:@"DELETE"];
 }
 
--(NSURLRequest *)urlRequestForPhotoUpload:(NSData *)imageData fileName:(NSString *)name photoName:(NSString *)photoName descirption:(NSString *)description category:(PXPhotoModelCategory) category {
-    if (self.authMode == PXAPIHelperModeNoAuth) return nil;
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName descirption:(NSString *)photoDescription
+{
+    return [self urlRequestToUploadPhoto:imageData photoName:photoName descirption:photoDescription category:PXAPIHelperUnspecifiedCategory];
+}
 
-    NSString *urlString = [NSString stringWithFormat:@"%@/photos/upload?name=%@&description=%@&category=%d", self.host, photoName, description, category];
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName descirption:(NSString *)photoDescription category:(PXPhotoModelCategory)photoCategory
+{
+    if (self.authMode == PXAPIHelperModeNoAuth) return nil;
+    
+    NSInteger category = photoCategory;
+    if (photoCategory == PXAPIHelperUnspecifiedCategory)
+    {
+        //There is a problem with the 500px API where it will not accept a category of -1. A category of 0 is used for unspecified. 
+        category = 0;
+    }
+
+    NSString *urlString = [NSString stringWithFormat:@"%@/photos/upload?name=%@&description=%@&category=%d", self.host, [photoName px_urlEncode], [photoDescription px_urlEncode], category];
 
     NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [mutableRequest setHTTPMethod:@"POST"];
 
-    NSString *POSTBoundary = @"----------0xKhTmLb0uNdArY";
-    [mutableRequest addValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", POSTBoundary] forHTTPHeaderField:@"Content-Type"];
+    NSString *boundaryString = @"----------0xKhTmLb0uNdArY";
+    [mutableRequest addValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundaryString] forHTTPHeaderField:@"Content-Type"];
 
+    //Construct the skeleton of the multipart request body
     NSMutableData *body = [NSMutableData data];
-    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", POSTBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundaryString] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Type: image/jpeg\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Transfer-Encoding: binary\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-ID: <file>\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@\"\r\n", name] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"file.jpg\"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Location: file\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 
+    //Now append the actual image data
     [body appendData:imageData];
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n\r\n", boundaryString] dataUsingEncoding:NSUTF8StringEncoding]];
 
-    [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n\r\n", POSTBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-
+    //Finally, sign the OAuth request
     NSString *accessTokenAuthHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", body, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
-
     [mutableRequest setValue:accessTokenAuthHeader forHTTPHeaderField:@"Authorization"];
     [mutableRequest setHTTPBody:body];
 

@@ -1015,4 +1015,61 @@
     return request;
 }
 
+#pragma mark - Uploading
+
+//Requires Authentication
++(PXRequest *)requestToUploadPhotoImage:(NSData *)imageData name:(NSString *)photoName description:(NSString *)photoDescription completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestToUploadPhotoImage:imageData name:photoName description:photoDescription category:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestToUploadPhotoImage:(NSData *)imageData name:(NSString *)photoName description:(NSString *)photoDescription category:(NSInteger)photoCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    if (!self.apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    if (self.apiHelper.authMode == PXAPIHelperModeNoAuth)
+    {
+        [self generateNotLoggedInError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [self.apiHelper urlRequestToUploadPhoto:imageData photoName:photoName descirption:photoDescription category:photoCategory];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400 || error.code == 403 || error.code == 404)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 422)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeInvalidData userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToUploadPhotoFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestToUploadPhotoCompleted object:results];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
+}
+
 @end

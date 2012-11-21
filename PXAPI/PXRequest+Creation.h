@@ -98,4 +98,11 @@
 +(PXRequest *)requestToFollowUser:(NSInteger)userToFollowID completion:(PXRequestCompletionBlock)completionBlock;
 +(PXRequest *)requestToUnFollowUser:(NSInteger)userToUnFollowID completion:(PXRequestCompletionBlock)completionBlock;
 
+#pragma mark - Uploading
+
+//Request Authentication
+//We use NSData to keep the library agnostic of NSImage vs. UIImage.
++(PXRequest *)requestToUploadPhotoImage:(NSData *)imageData name:(NSString *)photoName description:(NSString *)photoDescription completion:(PXRequestCompletionBlock)completionBlock;
++(PXRequest *)requestToUploadPhotoImage:(NSData *)imageData name:(NSString *)photoName description:(NSString *)photoDescription category:(NSInteger)photoCategory completion:(PXRequestCompletionBlock)completionBlock;
+
 @end

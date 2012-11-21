@@ -199,4 +199,9 @@ typedef enum : NSInteger
 -(NSURLRequest *)urlRequestToFollowUser:(NSInteger)userToFollowID;
 -(NSURLRequest *)urlRequestToUnFollowUser:(NSInteger)userToUnFollowID;
 
+#pragma mark - Photo Upload
+
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName description:(NSString *)photoDescription;
+-(NSURLRequest *)urlRequestToUploadPhoto:(NSData *)imageData photoName:(NSString *)photoName description:(NSString *)photoDescription category:(PXPhotoModelCategory) category;
+
 @end

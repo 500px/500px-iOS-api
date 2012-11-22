@@ -51,6 +51,9 @@ NSString *const PXRequestForUserFollowersListFailed = @"request to list user fol
 NSString *const PXAuthenticationChangedNotification = @"500px authentication changed";
 NSString *const PXAuthenticationFailedNotification = @"500px authentication failed";
 
+NSString *const PXRequestToUploadPhotoCompleted = @"request to upload photo completed";
+NSString *const PXRequestToUploadPhotoFailed = @"request to upload photo failed";
+
 @interface PXRequest () <NSURLConnectionDataDelegate>
 @end
 

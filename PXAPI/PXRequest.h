@@ -46,6 +46,9 @@ extern NSString *const PXRequestForUserFollowingListFailed;
 extern NSString *const PXRequestForUserFollowersListCompleted;
 extern NSString *const PXRequestForUserFollowersListFailed;
 
+extern NSString *const PXRequestToUploadPhotoCompleted;
+extern NSString *const PXRequestToUploadPhotoFailed;
+
 typedef enum : NSInteger
 {
     PXRequestErrorCodeNoConsumerKeyAndSecret = 0,
@@ -68,7 +71,8 @@ typedef enum : NSInteger
     PXRequestAPIDomainCodePhotoWasDeletedOrUserWasDeactivated,
     PXRequestAPIDomainCodeCommentWasMissing,
     PXRequestAPIDomainCodeVoteWasRejected,      //common reasons are: current user is inactive, has not completed their profile, is trying to vote on their own photo, or has already voted for the photo.
-    PXRequestAPIDomainCodeFavouriteWasRejected  //common reasons are: current user is inactive, has not completed their profile, or already has the photo in favorites list (or is not, and is trying to be removed).
+    PXRequestAPIDomainCodeFavouriteWasRejected, //common reasons are: current user is inactive, has not completed their profile, or already has the photo in favorites list (or is not, and is trying to be removed).
+    PXRequestAPIDomainCodeInvalidData           //probably an issue with photo name, description, or image data
 }PXRequestAPIDomainCode;
 
 extern NSString * const PXAuthenticationChangedNotification;

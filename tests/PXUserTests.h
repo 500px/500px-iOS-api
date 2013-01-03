@@ -8,7 +8,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-#import "PXTests.h"
+#import "PXIntegrationTests.h"
 
 @interface PXUserTests : SenTestCase
 

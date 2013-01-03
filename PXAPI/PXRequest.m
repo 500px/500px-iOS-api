@@ -94,6 +94,11 @@ static PXAPIHelper *_apiHelper;
     return self;
 }
 
+-(NSURLConnection *)urlConnectionForURLRequest:(NSURLRequest *)request
+{
+    return [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
+
 #pragma mark - Public Instance Methods
 
 -(void)start
@@ -107,7 +112,7 @@ static PXAPIHelper *_apiHelper;
     
     connectionMutableData = [NSMutableData data];
     
-    urlConnection = [[NSURLConnection alloc] initWithRequest:self.urlRequest delegate:self];
+    urlConnection = [self urlConnectionForURLRequest:self.urlRequest];
     [urlConnection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     
     [urlConnection start];

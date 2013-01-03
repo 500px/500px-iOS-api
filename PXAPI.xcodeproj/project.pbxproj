@@ -8,12 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5E58B42015D55DAB00C8DC84 /* PXRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58B41F15D55DAB00C8DC84 /* PXRequest.m */; };
-		5E58B42115D55DAB00C8DC84 /* PXRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58B41F15D55DAB00C8DC84 /* PXRequest.m */; };
 		5E58B50815D5794800C8DC84 /* PXAPIHelper+Auth.h in Headers */ = {isa = PBXBuildFile; fileRef = 5EA2500B15CEC1B7000592BB /* PXAPIHelper+Auth.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5E58B50915D5794B00C8DC84 /* PXRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E58B41E15D55DAB00C8DC84 /* PXRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5E58B50A15D5794D00C8DC84 /* PXAPI.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E58B43215D567C400C8DC84 /* PXAPI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5E5E4EE215CF03FA003F053A /* PXAuthTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE115CF03FA003F053A /* PXAuthTests.m */; };
-		5E5E4EE415CF05C3003F053A /* PXAPIHelper+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */; };
 		5E5E4EE715CF07FE003F053A /* PXAuthenticatedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE615CF07FE003F053A /* PXAuthenticatedTests.m */; };
 		5E5E4EEA15CF083C003F053A /* PXNonAuthenticatedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4EE915CF083C003F053A /* PXNonAuthenticatedTests.m */; };
 		5E5E4F0815CF6074003F053A /* PXSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E5E4F0715CF6074003F053A /* PXSearchTests.m */; };
@@ -21,6 +19,11 @@
 		5E827AA515D5D702000403A2 /* PXRequest+Creation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E827AA315D5D702000403A2 /* PXRequest+Creation.h */; };
 		5E827AA615D5D702000403A2 /* PXRequest+Creation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E827AA415D5D702000403A2 /* PXRequest+Creation.m */; };
 		5E84BBC416960BBF00AD6422 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E84BBC316960BBF00AD6422 /* libOCMock.a */; };
+		5E84BBC716960C6700AD6422 /* PXPXRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E84BBC616960C6700AD6422 /* PXPXRequestTests.m */; };
+		5E84BBD016960FCF00AD6422 /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
+		5E84BBD116960FCF00AD6422 /* PXAPIHelper+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */; };
+		5E84BBD216960FCF00AD6422 /* PXRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58B41F15D55DAB00C8DC84 /* PXRequest.m */; };
+		5E84BBD316960FCF00AD6422 /* PXRequest+Creation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E827AA415D5D702000403A2 /* PXRequest+Creation.m */; };
 		5EA2500D15CEC1B7000592BB /* PXAPIHelper+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */; };
 		5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -33,10 +36,8 @@
 		5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 		5EB9AFD715C34F3F002E7F6D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFD615C34F3F002E7F6D /* SenTestingKit.framework */; };
 		5EB9AFDA15C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
-		5EB9AFDD15C34F3F002E7F6D /* libPXAPI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC415C34F3F002E7F6D /* libPXAPI.a */; };
 		5EB9AFE315C34F3F002E7F6D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE115C34F3F002E7F6D /* InfoPlist.strings */; };
 		5EB9AFE615C34F3F002E7F6D /* PXIntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFE515C34F3F002E7F6D /* PXIntegrationTests.m */; };
-		5ECEF38115C4C39A00732145 /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,8 @@
 		5E84BBC116960BA200AD6422 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		5E84BBC216960BA200AD6422 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 		5E84BBC316960BBF00AD6422 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = tests/libOCMock.a; sourceTree = "<group>"; };
+		5E84BBC516960C6700AD6422 /* PXPXRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXPXRequestTests.h; sourceTree = "<group>"; };
+		5E84BBC616960C6700AD6422 /* PXPXRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXPXRequestTests.m; sourceTree = "<group>"; };
 		5EA2500B15CEC1B7000592BB /* PXAPIHelper+Auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PXAPIHelper+Auth.h"; sourceTree = "<group>"; };
 		5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PXAPIHelper+Auth.m"; sourceTree = "<group>"; };
 		5EA2501415CEC7C7000592BB /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -121,7 +124,6 @@
 				5EB9AFD715C34F3F002E7F6D /* SenTestingKit.framework in Frameworks */,
 				5EB9AFDA15C34F3F002E7F6D /* Foundation.framework in Frameworks */,
 				5E84BBC416960BBF00AD6422 /* libOCMock.a in Frameworks */,
-				5EB9AFDD15C34F3F002E7F6D /* libPXAPI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				5E84BBBC16960BA200AD6422 /* OCMock */,
+				5E84BBC516960C6700AD6422 /* PXPXRequestTests.h */,
+				5E84BBC616960C6700AD6422 /* PXPXRequestTests.m */,
 			);
 			name = "Unit Tests";
 			sourceTree = "<group>";
@@ -379,17 +383,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EB9AFE615C34F3F002E7F6D /* PXIntegrationTests.m in Sources */,
-				5ECEF38115C4C39A00732145 /* PXAPIHelper.m in Sources */,
 				5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */,
 				5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */,
 				5EA2501C15CEC7C7000592BB /* OAuthCore.m in Sources */,
 				5E5E4EE215CF03FA003F053A /* PXAuthTests.m in Sources */,
-				5E5E4EE415CF05C3003F053A /* PXAPIHelper+Auth.m in Sources */,
 				5E5E4EE715CF07FE003F053A /* PXAuthenticatedTests.m in Sources */,
 				5E5E4EEA15CF083C003F053A /* PXNonAuthenticatedTests.m in Sources */,
 				5E5E4F0815CF6074003F053A /* PXSearchTests.m in Sources */,
 				5E5E4F1515D01AD5003F053A /* PXUserTests.m in Sources */,
-				5E58B42115D55DAB00C8DC84 /* PXRequest.m in Sources */,
+				5E84BBC716960C6700AD6422 /* PXPXRequestTests.m in Sources */,
+				5E84BBD016960FCF00AD6422 /* PXAPIHelper.m in Sources */,
+				5E84BBD116960FCF00AD6422 /* PXAPIHelper+Auth.m in Sources */,
+				5E84BBD216960FCF00AD6422 /* PXRequest.m in Sources */,
+				5E84BBD316960FCF00AD6422 /* PXRequest+Creation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +507,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/tests\"",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -520,6 +527,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/tests\"",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};

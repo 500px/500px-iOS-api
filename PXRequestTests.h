@@ -8,6 +8,6 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface PXPXRequestTests : SenTestCase
+@interface PXRequestTests : SenTestCase
 
 @end

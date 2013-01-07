@@ -19,7 +19,7 @@
 		5E827AA515D5D702000403A2 /* PXRequest+Creation.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E827AA315D5D702000403A2 /* PXRequest+Creation.h */; };
 		5E827AA615D5D702000403A2 /* PXRequest+Creation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E827AA415D5D702000403A2 /* PXRequest+Creation.m */; };
 		5E84BBC416960BBF00AD6422 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E84BBC316960BBF00AD6422 /* libOCMock.a */; };
-		5E84BBC716960C6700AD6422 /* PXPXRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E84BBC616960C6700AD6422 /* PXPXRequestTests.m */; };
+		5E84BBC716960C6700AD6422 /* PXRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E84BBC616960C6700AD6422 /* PXRequestTests.m */; };
 		5E84BBD016960FCF00AD6422 /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
 		5E84BBD116960FCF00AD6422 /* PXAPIHelper+Auth.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */; };
 		5E84BBD216960FCF00AD6422 /* PXRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E58B41F15D55DAB00C8DC84 /* PXRequest.m */; };
@@ -85,8 +85,8 @@
 		5E84BBC116960BA200AD6422 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
 		5E84BBC216960BA200AD6422 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 		5E84BBC316960BBF00AD6422 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOCMock.a; path = tests/libOCMock.a; sourceTree = "<group>"; };
-		5E84BBC516960C6700AD6422 /* PXPXRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXPXRequestTests.h; sourceTree = "<group>"; };
-		5E84BBC616960C6700AD6422 /* PXPXRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXPXRequestTests.m; sourceTree = "<group>"; };
+		5E84BBC516960C6700AD6422 /* PXRequestTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PXRequestTests.h; sourceTree = "<group>"; };
+		5E84BBC616960C6700AD6422 /* PXRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PXRequestTests.m; sourceTree = "<group>"; };
 		5EA2500B15CEC1B7000592BB /* PXAPIHelper+Auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PXAPIHelper+Auth.h"; sourceTree = "<group>"; };
 		5EA2500C15CEC1B7000592BB /* PXAPIHelper+Auth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PXAPIHelper+Auth.m"; sourceTree = "<group>"; };
 		5EA2501415CEC7C7000592BB /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -134,8 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				5E84BBBC16960BA200AD6422 /* OCMock */,
-				5E84BBC516960C6700AD6422 /* PXPXRequestTests.h */,
-				5E84BBC616960C6700AD6422 /* PXPXRequestTests.m */,
+				5E84BBC516960C6700AD6422 /* PXRequestTests.h */,
+				5E84BBC616960C6700AD6422 /* PXRequestTests.m */,
 			);
 			name = "Unit Tests";
 			sourceTree = "<group>";
@@ -391,7 +391,7 @@
 				5E5E4EEA15CF083C003F053A /* PXNonAuthenticatedTests.m in Sources */,
 				5E5E4F0815CF6074003F053A /* PXSearchTests.m in Sources */,
 				5E5E4F1515D01AD5003F053A /* PXUserTests.m in Sources */,
-				5E84BBC716960C6700AD6422 /* PXPXRequestTests.m in Sources */,
+				5E84BBC716960C6700AD6422 /* PXRequestTests.m in Sources */,
 				5E84BBD016960FCF00AD6422 /* PXAPIHelper.m in Sources */,
 				5E84BBD116960FCF00AD6422 /* PXAPIHelper+Auth.m in Sources */,
 				5E84BBD216960FCF00AD6422 /* PXRequest.m in Sources */,

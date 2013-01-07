@@ -36,7 +36,7 @@
 
 -(void)testForDefaultPhotoSizes
 {
-    NSDictionary *dictionary = [PXTests jsonDictionaryForRequest:[helper urlRequestForSearchTerm:@"cats"] expectingResponseCode:200];
+    NSDictionary *dictionary = [PXIntegrationTests jsonDictionaryForRequest:[helper urlRequestForSearchTerm:@"cats"] expectingResponseCode:200];
     
     STAssertTrue([[[[dictionary valueForKey:@"photos"] lastObject] valueForKey:@"images"] count] > 1, @"GET search returned only 1 or no photos jpegs");
 }

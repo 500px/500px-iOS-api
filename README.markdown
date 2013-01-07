@@ -42,3 +42,15 @@ In your application delegate's `application:didFinishLaunchingWithOptions:` meth
 Got to the [500px Applications Page](http://500px.com/settings/applications?from=developers) to register for your consumer key and secret.
 
 There are two ways to use this library. The first is to use the `PXAPIHelper` class methods to generate `NSURLRequest` objects to use directly (either with `NSURLConnection` or [`ASIHTTPRequest`](https://github.com/pokeb/asi-http-request/tree). The other way is to use the built-in `PXRequest` class methods to create requests against the 500px API; they provide a completion block that is executed after the request returns, and they also post notifications to the default `NSNotificationCenter`.
+
+## Tests
+
+The library currently has a suite of integration tests that run against the live 500px API. In order to run these tests, you *must* replace the following values in `PXIntegrationTests.h`.
+
+    #define kUserNameForAuthentication  @"__CHANGE_ME__"
+    #define kPasswordForAuthentication  @"__CHANGE_ME__"
+    
+    #define kPXAPIConsumerKey       @"__CHANGE_ME__"
+    #define kPXAPIConsumerSecret    @"__CHANGE_ME__"
+
+There are also some unit tests. OCMock tragically does not allow us to test class methods, so the unit tests are unforunately limited in their scope. However, between the unit tests and the integration tests, coverage is pretty solid.

@@ -25,7 +25,7 @@
 #define kPXAPIConsumerKey       @"__CHANGE_ME__"
 #define kPXAPIConsumerSecret    @"__CHANGE_ME__"
 
-@interface PXTests : SenTestCase
+@interface PXIntegrationTests : SenTestCase
 
 +(NSDictionary *)jsonDictionaryForRequest:(NSURLRequest *)urlRequest expectingResponseCode:(NSInteger)httpResponseCode;
 

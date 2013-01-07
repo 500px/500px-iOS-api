@@ -94,6 +94,11 @@ static PXAPIHelper *_apiHelper;
     return self;
 }
 
+-(NSURLConnection *)urlConnectionForURLRequest:(NSURLRequest *)request
+{
+    return [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
+
 #pragma mark - Public Instance Methods
 
 -(void)start
@@ -107,7 +112,7 @@ static PXAPIHelper *_apiHelper;
     
     connectionMutableData = [NSMutableData data];
     
-    urlConnection = [[NSURLConnection alloc] initWithRequest:self.urlRequest delegate:self];
+    urlConnection = [self urlConnectionForURLRequest:self.urlRequest];
     [urlConnection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     
     [urlConnection start];
@@ -252,7 +257,8 @@ static PXAPIHelper *_apiHelper;
 {
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
     
-    if (httpResponse.statusCode != 200)
+    NSUInteger statusCode = httpResponse.statusCode;
+    if (statusCode != 200)
     {
         [connection cancel];
         _requestStatus = PXRequestStatusFailed;
@@ -260,7 +266,7 @@ static PXAPIHelper *_apiHelper;
         if (requestCompletionBlock)
         {
             NSError *error = [NSError errorWithDomain:PXRequestErrorConnectionDomain
-                                                 code:httpResponse.statusCode
+                                                 code:statusCode
                                              userInfo:@{ NSURLErrorKey : self.urlRequest.URL}];
             requestCompletionBlock(nil, error);
         }

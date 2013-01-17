@@ -28,9 +28,9 @@
 		5EA2501A15CEC7C7000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EA2501B15CEC7C7000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5EA2501C15CEC7C7000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		5EA2502115CECB79000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		5EA2502215CECB79000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		5EA2502315CECB79000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5EA2502115CECB79000592BB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501515CEC7C7000592BB /* NSData+Base64.m */; settings = {COMPILER_FLAGS = ""; }; };
+		5EA2502215CECB79000592BB /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501715CEC7C7000592BB /* OAuth+Additions.m */; settings = {COMPILER_FLAGS = ""; }; };
+		5EA2502315CECB79000592BB /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2501915CEC7C7000592BB /* OAuthCore.m */; settings = {COMPILER_FLAGS = ""; }; };
 		5EB9AFC815C34F3F002E7F6D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB9AFC715C34F3F002E7F6D /* Foundation.framework */; };
 		5EB9AFCD15C34F3F002E7F6D /* PXAPIHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 5EB9AFCC15C34F3F002E7F6D /* PXAPIHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EB9AFCF15C34F3F002E7F6D /* PXAPIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EB9AFCE15C34F3F002E7F6D /* PXAPIHelper.m */; };
@@ -470,6 +470,7 @@
 		5EB9AFEA15C34F3F002E7F6D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/_00px_iOS_api.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PXAPI/PXAPI-Prefix.pch";
@@ -483,6 +484,7 @@
 		5EB9AFEB15C34F3F002E7F6D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DSTROOT = /tmp/_00px_iOS_api.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PXAPI/PXAPI-Prefix.pch";

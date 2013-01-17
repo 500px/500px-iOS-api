@@ -103,7 +103,7 @@ XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX, XX,XX,XX,XX,
 
 + (NSData *) dataFromBase64String: (NSString *) base64String
 {
-	return ( [[[self alloc] initWithBase64String: base64String] autorelease] );
+	return ( [[self alloc] initWithBase64String: base64String] );
 }
 
 - (id) initWithBase64String: (NSString *) base64String
@@ -253,7 +253,7 @@ static inline void output64Chunk( int c1, int c2, int c3, int pads, NSMutableDat
 		}
 	}
 	
-	return ( [[[NSString allocWithZone: [self zone]] initWithData: buffer encoding: NSASCIIStringEncoding] autorelease] );
+	return ( [[NSString allocWithZone: nil] initWithData: buffer encoding: NSASCIIStringEncoding] );
 }
 
 @end

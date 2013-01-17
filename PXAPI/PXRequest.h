@@ -91,7 +91,7 @@ typedef enum : NSInteger
 
 @interface PXRequest : NSObject
 
-@property (nonatomic, readonly) NSURLRequest *urlRequest;
+@property (weak, nonatomic, readonly) NSURLRequest *urlRequest;
 @property (nonatomic, readonly) PXRequestStatus requestStatus;
 
 +(PXAPIHelper *)apiHelper;

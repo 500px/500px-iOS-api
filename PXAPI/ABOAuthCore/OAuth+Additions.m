@@ -135,7 +135,7 @@
 	CFUUIDRef u = CFUUIDCreate(kCFAllocatorDefault);
 	CFStringRef s = CFUUIDCreateString(kCFAllocatorDefault, u);
 	CFRelease(u);
-	return [(NSString *)s autorelease];
+	return (__bridge NSString *)s;
 }
 
 @end

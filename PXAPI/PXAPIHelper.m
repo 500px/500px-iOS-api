@@ -799,6 +799,30 @@
     return mutableRequest;
 }
 
+-(NSURLRequest *)urlRequestToReportPhotoID:(NSInteger)photoID forReason:(NSInteger)reason
+{
+    NSLog(@"urlRequestToReportPhotoID:forReason: v4");
+
+    if (self.authMode == PXAPIHelperModeNoAuth) return nil; //Requires authentication
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/photos/%d/report", self.host, photoID];
+    NSMutableURLRequest *mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [mutableRequest setHTTPMethod:@"POST"];
+    
+    NSMutableString *paramsAsString = [[NSMutableString alloc] init];
+    [paramsAsString appendFormat:@"id=%d", photoID];
+    [paramsAsString appendFormat:@"reason=%d", reason];
+    
+    NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *accessTokenAuthorizationHeader = OAuthorizationHeader(mutableRequest.URL, @"POST", bodyData, self.consumerKey, self.consumerSecret, self.authToken, self.authSecret);
+    
+    [mutableRequest setValue:accessTokenAuthorizationHeader forHTTPHeaderField:@"Authorization"];
+    [mutableRequest setHTTPBody:bodyData];
+    
+    return mutableRequest;
+}
+
 #pragma mark - Photo Searching
 
 -(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm

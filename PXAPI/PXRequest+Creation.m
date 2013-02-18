@@ -469,6 +469,52 @@
     return request;
 }
 
++(PXRequest *)requestToReportPhotoID:(NSInteger)photoID forReason:(NSInteger)reason completion:(PXRequestCompletionBlock)completionBlock
+{
+    if (!self.apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [self.apiHelper urlRequestToReportPhotoID:photoID forReason:reason];
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSLog(@"requestToReportPhotoID:forReason: completion block");
+        NSLog(@"requestToReportPhotoID:forReason: error: %@", error);
+        NSLog(@"requestToReportPhotoID:forReason: results: %@", results);
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoDoesNotExist userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            else if (error.code == 403)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodePhotoWasDeletedOrUserWasDeactivated userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestReportPhotoFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestReportPhotoCompleted object:results];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
+}
 
 #pragma mark Photo Searching
 

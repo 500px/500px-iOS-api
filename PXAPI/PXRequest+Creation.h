@@ -60,6 +60,8 @@
 +(PXRequest *)requestForPhotoID:(NSInteger)photoID commentsPage:(NSInteger)commentsPage completion:(PXRequestCompletionBlock)completionBlock;
 +(PXRequest *)requestForPhotoID:(NSInteger)photoID photoSizes:(PXPhotoModelSize)photoSizesMask commentsPage:(NSInteger)commentPage completion:(PXRequestCompletionBlock)completionBlock;
 
++(PXRequest *)requestToReportPhotoID:(NSInteger)photoID forReason:(NSInteger)reason completion:(PXRequestCompletionBlock)completionBlock;
+
 #pragma mark Photo Searching
 
 //Search page results are 1-indexed

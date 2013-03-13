@@ -801,8 +801,6 @@
 
 -(NSURLRequest *)urlRequestToReportPhotoID:(NSInteger)photoID forReason:(NSInteger)reason
 {
-    NSLog(@"urlRequestToReportPhotoID:forReason: v4");
-
     if (self.authMode == PXAPIHelperModeNoAuth) return nil; //Requires authentication
     
     NSString *urlString = [NSString stringWithFormat:@"%@/photos/%d/report", self.host, photoID];
@@ -810,7 +808,6 @@
     [mutableRequest setHTTPMethod:@"POST"];
     
     NSMutableString *paramsAsString = [[NSMutableString alloc] init];
-    [paramsAsString appendFormat:@"id=%d", photoID];
     [paramsAsString appendFormat:@"reason=%d", reason];
     
     NSData *bodyData = [paramsAsString dataUsingEncoding:NSUTF8StringEncoding];

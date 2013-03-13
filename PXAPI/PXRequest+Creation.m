@@ -481,10 +481,6 @@
     
     PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
         
-        NSLog(@"requestToReportPhotoID:forReason: completion block");
-        NSLog(@"requestToReportPhotoID:forReason: error: %@", error);
-        NSLog(@"requestToReportPhotoID:forReason: results: %@", results);
-        
         NSError *passedOnError = error;
         
         if (error)

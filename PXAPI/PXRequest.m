@@ -27,6 +27,9 @@ NSString *const PXRequestUserDetailsFailed = @"logged in user request failed";
 NSString *const PXRequestPhotoDetailsCompleted = @"photo details completed";
 NSString *const PXRequestPhotoDetailsFailed = @"photo details request failed";
 
+NSString *const PXRequestReportPhotoCompleted = @"reporting of photo completed";
+NSString *const PXRequestReportPhotoFailed = @"reporting of photo request failed";
+
 NSString *const PXRequestToFavouritePhotoCompleted = @"request to favourite photo completed";
 NSString *const PXRequestToFavouritePhotoFailed = @"request to favourite photo failed";
 

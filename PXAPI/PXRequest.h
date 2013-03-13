@@ -25,6 +25,9 @@ extern NSString *const PXRequestLoggedInUserFailed;
 extern NSString *const PXRequestUserDetailsCompleted;
 extern NSString *const PXRequestUserDetailsFailed;
 
+extern NSString *const PXRequestReportPhotoCompleted;
+extern NSString *const PXRequestReportPhotoFailed;
+
 extern NSString *const PXRequestToFavouritePhotoCompleted;
 extern NSString *const PXRequestToFavouritePhotoFailed;
 

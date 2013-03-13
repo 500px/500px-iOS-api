@@ -162,6 +162,8 @@ typedef enum : NSInteger
 -(NSURLRequest *)urlRequestForPhotoID:(NSInteger)photoID commentsPage:(NSInteger)commentsPage;
 -(NSURLRequest *)urlRequestForPhotoID:(NSInteger)photoID photoSizes:(PXPhotoModelSize)photoSizesMask commentsPage:(NSInteger)commentPage;
 
+-(NSURLRequest *)urlRequestToReportPhotoID:(NSInteger)photoID forReason:(NSInteger)reason;
+
 #pragma mark - Photo Searching
 
 //Search page results are 1-indexed

@@ -8,25 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum : NSInteger
-{
+typedef NS_ENUM(NSInteger, PXAPIHelperPhotoFeature) {
     PXAPIHelperPhotoFeaturePopular = 0,
     PXAPIHelperPhotoFeatureUpcoming,
     PXAPIHelperPhotoFeatureEditors,
     PXAPIHelperPhotoFeatureFreshToday,
     PXAPIHelperPhotoFeatureFreshYesterday,
     PXAPIHelperPhotoFeatureFreshWeek,
-}PXAPIHelperPhotoFeature;
+};
 
-typedef enum : NSInteger
-{
+typedef	NS_ENUM(NSInteger, PXAPIHelperUserPhotoFeature) {
     PXAPIHelperUserPhotoFeaturePhotos = 0,
     PXAPIHelperUserPhotoFeatureFriends,
     PXAPIHelperUserPhotoFeatureFavourites
-}PXAPIHelperUserPhotoFeature;
+};
 
-typedef enum : NSInteger
-{
+typedef NS_ENUM(NSInteger, PXAPIHelperSortOrder) {
     PXAPIHelperSortOrderCreatedAt = 0,
     PXAPIHelperSortOrderRating,
     PXAPIHelperSortOrderTimesViewed,
@@ -34,19 +31,17 @@ typedef enum : NSInteger
     PXAPIHelperSortOrderFavouritesCount,
     PXAPIHelperSortOrderCommentsCount,
     PXAPIHelperSortOrderTakenAt
-}PXAPIHelperSortOrder;
+};
 
-typedef enum : NSUInteger
-{
+typedef NS_OPTIONS(NSUInteger, PXPhotoModelSize) {
     PXPhotoModelSizeExtraSmallThumbnail = (1 << 0),
     PXPhotoModelSizeSmallThumbnail = (1 << 1),
     PXPhotoModelSizeThumbnail = (1 << 2),
     PXPhotoModelSizeLarge = (1 << 3),
     PXPhotoModelSizeExtraLarge = (1 << 4)
-}PXPhotoModelSize;
+};
 
-typedef enum : NSInteger
-{
+typedef NS_ENUM(NSInteger, PXPhotoModelCategory) {
     PXPhotoModelCategoryUncategorized = 0,
     PXPhotoModelCategoryAbstract = 10,
     PXPhotoModelCategoryAnimals = 11,
@@ -77,19 +72,18 @@ typedef enum : NSInteger
     PXPhotoModelCategoryWedding = 25,
     
     PXAPIHelperUnspecifiedCategory = -1
-}PXPhotoModelCategory;
+};
 
-typedef enum : NSInteger
-{
+typedef NS_ENUM(NSInteger, PXAPIHelperMode) {
     PXAPIHelperModeNoAuth = 0,
     PXAPIHelperModeOAuth
-}PXAPIHelperMode;
+};
 
 #define kPXAPIHelperDefaultResultsPerPage   20
 #define kPXAPIHelperMaximumResultsPerPage   100
 #define kPXAPIHelperDefaultFeature          PXAPIHelperPhotoFeaturePopular
 #define kPXAPIHelperDefaultUserPhotoFeature PXAPIHelperUserPhotoFeaturePhotos
-#define kPXAPIHelperDefaultPhotoSize        PXPhotoModelSizeLarge | PXPhotoModelSizeThumbnail
+#define kPXAPIHelperDefaultPhotoSize        (PXPhotoModelSizeLarge | PXPhotoModelSizeThumbnail)
 #define kPXAPIHelperDefaultSortOrder        PXAPIHelperSortOrderCreatedAt
 
 @interface PXAPIHelper : NSObject

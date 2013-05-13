@@ -368,7 +368,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/PXAPIExample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "$(SRCROOT)/Example/PXAPIExample-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = PXAPIExample;
@@ -382,7 +382,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/PXAPIExample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = "$(SRCROOT)/Example/PXAPIExample-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = PXAPIExample;

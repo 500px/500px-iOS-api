@@ -52,15 +52,13 @@ extern NSString *const PXRequestForUserFollowersListFailed;
 extern NSString *const PXRequestToUploadPhotoCompleted;
 extern NSString *const PXRequestToUploadPhotoFailed;
 
-typedef enum : NSInteger
-{
+typedef NS_ENUM(NSInteger, PXRequestErrorCode) {
     PXRequestErrorCodeNoConsumerKeyAndSecret = 0,
     PXRequestErrorCodeUserNotLoggedIn,
     PXRequestErrorCodeCancelled,
-}PXRequestErrorCode;
+};
 
-typedef enum : NSInteger
-{
+typedef NS_ENUM(NSInteger, PXRequestAPIDomainCode) {
     //General API Errors
     PXRequestAPIDomainCodeRequiredParametersWereMissing = 0,
     PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid,
@@ -76,21 +74,20 @@ typedef enum : NSInteger
     PXRequestAPIDomainCodeVoteWasRejected,      //common reasons are: current user is inactive, has not completed their profile, is trying to vote on their own photo, or has already voted for the photo.
     PXRequestAPIDomainCodeFavouriteWasRejected, //common reasons are: current user is inactive, has not completed their profile, or already has the photo in favorites list (or is not, and is trying to be removed).
     PXRequestAPIDomainCodeInvalidData           //probably an issue with photo name, description, or image data
-}PXRequestAPIDomainCode;
+};
 
 extern NSString * const PXAuthenticationChangedNotification;
 extern NSString * const PXAuthenticationFailedNotification;
 
 typedef void (^PXRequestCompletionBlock)(NSDictionary *results, NSError *error);
 
-typedef enum : NSInteger
-{
+typedef NS_ENUM(NSInteger, PXRequestStatus) {
     PXRequestStatusNotStarted = 0,
     PXRequestStatusStarted,
     PXRequestStatusCompleted,
     PXRequestStatusFailed,
     PXRequestStatusCancelled
-}PXRequestStatus;
+};
 
 @interface PXRequest : NSObject
 

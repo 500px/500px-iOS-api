@@ -477,7 +477,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = PXAPI;
 				SKIP_INSTALL = YES;
-				WARNING_CFLAGS = "-Weverything";
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -491,7 +491,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = PXAPI;
 				SKIP_INSTALL = YES;
-				WARNING_CFLAGS = "-Weverything";
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};

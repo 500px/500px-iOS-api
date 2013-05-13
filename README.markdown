@@ -4,7 +4,7 @@ Stil a work in progress; I'm only working on this in my spare time. It currently
 
 ## Requirements
 
-This project requires LLVM 4.0+ and Xcode 4.4+, and is compiled with ARC. 
+This project requires LLVM 4.0+ and Xcode 4.5+, and is compiled with ARC.
 
 ## How to use:
 

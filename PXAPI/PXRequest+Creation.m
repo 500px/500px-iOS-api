@@ -875,7 +875,7 @@
         return nil;
     }
     
-    NSURLRequest *urlRequest = [self.apiHelper urlRequestForUserFollowing:userID];
+    NSURLRequest *urlRequest = [self.apiHelper urlRequestForUserFollowing:userID page:page];
     
     PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
         
@@ -923,7 +923,7 @@
         return nil;
     }
     
-    NSURLRequest *urlRequest = [self.apiHelper urlRequestForUserFollowers:userID];
+    NSURLRequest *urlRequest = [self.apiHelper urlRequestForUserFollowers:userID page:page];
     
     PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
         

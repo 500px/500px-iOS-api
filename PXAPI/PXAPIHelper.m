@@ -878,6 +878,26 @@
     return [self urlRequestForSearchTerm:nil searchTag:searchTag searchGeo:nil page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
 }
 
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo
+{
+    return [self urlRequestForSearchGeo:searchGeo page:1];
+}
+
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page
+{
+    return [self urlRequestForSearchGeo:searchGeo page:1 resultsPerPage:kPXAPIHelperDefaultResultsPerPage];
+}
+
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage
+{
+    return [self urlRequestForSearchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize];
+}
+
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask
+{
+    return [self urlRequestForSearchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:PXAPIHelperUnspecifiedCategory];
+}
+
 -(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
 {
     if (!searchGeo) return nil;

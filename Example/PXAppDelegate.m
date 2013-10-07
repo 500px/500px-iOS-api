@@ -19,8 +19,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     
-    [PXRequest setConsumerKey:@"__CHANGE_ME__" consumerSecret:@"__CHANGE_ME__"];
-    
+//    [PXRequest setConsumerKey:@"__CHANGE_ME__" consumerSecret:@"__CHANGE_ME__"];
+    [PXRequest setConsumerKey:@"9sUVdra51AYawcQwQjFaQA7ueUqpaXLEZQJT7Pzy" consumerSecret:@"CmmZmHfSu1xi9BfVq4cS5RcAAhnR9UylGzPJQjqc"];
+
     PXMasterViewController *masterViewController = [[PXMasterViewController alloc] initWithNibName:@"PXMasterViewController" bundle:nil];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
     self.window.rootViewController = self.navigationController;

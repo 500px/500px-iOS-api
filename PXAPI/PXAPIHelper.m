@@ -907,7 +907,6 @@
     return [self urlRequestForSearchTerm:nil searchTag:nil searchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
 }
 
-//Private method
 -(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag searchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
 {
     if (resultsPerPage > kPXAPIHelperMaximumResultsPerPage)
@@ -919,11 +918,11 @@
     {
         [options setValue:searchTerm forKey:@"term"];
     }
-    else if (searchTag)
+    if (searchTag)
     {
         [options setValue:searchTag forKey:@"tag"];
     }
-    else if (searchGeo)
+    if (searchGeo)
     {
         [options setValue:searchGeo forKey:@"geo"];
     }

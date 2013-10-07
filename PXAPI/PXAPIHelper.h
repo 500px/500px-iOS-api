@@ -180,6 +180,8 @@ typedef NS_ENUM(NSInteger, PXAPIHelperMode) {
 -(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask;
 -(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory;
 
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag searchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory;
+
 #pragma mark - Users
 
 //Requires Authentication

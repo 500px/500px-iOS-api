@@ -40,10 +40,16 @@
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
-    [PXRequest requestForPhotosWithCompletion:^(NSDictionary *results, NSError *error) {
+    [PXRequest requestForSearchTerm:@"street"
+                          searchTag:@"urban"
+                          searchGeo:@"40.7144,-74.006,50000"
+                               page:1
+                     resultsPerPage:60
+                         photoSizes:PXPhotoModelSizeLarge
+                             except:PXPhotoModelCategoryUncategorized
+                         completion:^(NSDictionary *results, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        if (results)
-        {
+        if (results) {
             [self setNewObjects:[results valueForKey:@"photos"]];
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Log in" style:UIBarButtonItemStyleBordered target:self action:@selector(login)];
         }

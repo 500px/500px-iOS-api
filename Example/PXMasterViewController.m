@@ -42,7 +42,7 @@
     
     [PXRequest requestForSearchTerm:@"street"
                           searchTag:@"urban"
-                          searchGeo:@"40.7144,-74.006,50000"
+                          searchGeo:@"40.7144,-74.006,50000km"
                                page:1
                      resultsPerPage:60
                          photoSizes:PXPhotoModelSizeLarge

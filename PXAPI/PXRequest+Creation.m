@@ -576,6 +576,107 @@
 }
 
 
++(PXRequest *)requestForSearchGeo:(NSString *)searchGeo completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchGeo:searchGeo page:1 completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchGeo:searchGeo page:page resultsPerPage:kPXAPIHelperDefaultResultsPerPage completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask completion:(PXRequestCompletionBlock)completionBlock
+{
+    return [self requestForSearchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:PXAPIHelperUnspecifiedCategory completion:completionBlock];
+}
+
++(PXRequest *)requestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    if (!self.apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [self.apiHelper urlRequestForSearchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
+        
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchCompleted object:results];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
+}
+
++(PXRequest *)requestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag searchGeo:(NSString *)searchGeo  page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory completion:(PXRequestCompletionBlock)completionBlock
+{
+    if (!self.apiHelper)
+    {
+        [self generateNoConsumerKeyError:completionBlock];
+        return nil;
+    }
+    
+    NSURLRequest *urlRequest = [self.apiHelper urlRequestForSearchTerm:searchTerm searchTag:searchTag searchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
+    
+    NSLog(@"urlRequest : %@", urlRequest.URL.absoluteString);
+    
+    PXRequest *request = [[PXRequest alloc] initWithURLRequest:urlRequest completion:^(NSDictionary *results, NSError *error) {
+        
+        NSError *passedOnError = error;
+        
+        if (error)
+        {
+            if (error.code == 400)
+            {
+                passedOnError = [NSError errorWithDomain:PXRequestAPIDomain code:PXRequestAPIDomainCodeRequiredParametersWereMissingOrInvalid userInfo:@{NSUnderlyingErrorKey : error}];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchFailed object:passedOnError];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PXRequestSearchCompleted object:results];
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock(results, passedOnError);
+        }
+    }];
+    
+    [request start];
+    
+    return request;
+}
+
+
 +(PXRequest *)requestForSearchTag:(NSString *)searchTag completion:(PXRequestCompletionBlock)completionBlock
 {
     return [self requestForSearchTag:searchTag page:1 completion:completionBlock];

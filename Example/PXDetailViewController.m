@@ -31,6 +31,7 @@
     // Update the user interface for the detail item.
     
     self.detailImageView.image = nil;
+    self.detailImageView.clipsToBounds = YES;
     
     self.navigationItem.title = [self.detailItem valueForKeyPath:@"name"];
     

@@ -20,7 +20,7 @@
     // Override point for customization after application launch.
     
     [PXRequest setConsumerKey:@"__CHANGE_ME__" consumerSecret:@"__CHANGE_ME__"];
-    
+
     PXMasterViewController *masterViewController = [[PXMasterViewController alloc] initWithNibName:@"PXMasterViewController" bundle:nil];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
     self.window.rootViewController = self.navigationController;

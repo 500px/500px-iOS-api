@@ -848,7 +848,7 @@
 {
     if (!searchTerm) return nil;
     
-    return [self urlRequestForSearchTerm:searchTerm searchTag:nil page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
+    return [self urlRequestForSearchTerm:searchTerm searchTag:nil searchGeo:nil page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
 }
 
 -(NSURLRequest *)urlRequestForSearchTag:(NSString *)searchTag
@@ -875,11 +875,39 @@
 {
     if (!searchTag) return nil;
     
-    return [self urlRequestForSearchTerm:nil searchTag:searchTag page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
+    return [self urlRequestForSearchTerm:nil searchTag:searchTag searchGeo:nil page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
 }
 
-//Private method
--(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo
+{
+    return [self urlRequestForSearchGeo:searchGeo page:1];
+}
+
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page
+{
+    return [self urlRequestForSearchGeo:searchGeo page:1 resultsPerPage:kPXAPIHelperDefaultResultsPerPage];
+}
+
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage
+{
+    return [self urlRequestForSearchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:kPXAPIHelperDefaultPhotoSize];
+}
+
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask
+{
+    return [self urlRequestForSearchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:PXAPIHelperUnspecifiedCategory];
+}
+
+-(NSURLRequest *)urlRequestForSearchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
+{
+    if (!searchGeo) return nil;
+    
+    NSLog(@"searchGeo : %@",searchGeo);
+    
+    return [self urlRequestForSearchTerm:nil searchTag:nil searchGeo:searchGeo page:page resultsPerPage:resultsPerPage photoSizes:photoSizesMask except:excludedCategory];
+}
+
+-(NSURLRequest *)urlRequestForSearchTerm:(NSString *)searchTerm searchTag:(NSString *)searchTag searchGeo:(NSString *)searchGeo page:(NSUInteger)page resultsPerPage:(NSUInteger)resultsPerPage photoSizes:(PXPhotoModelSize)photoSizesMask except:(PXPhotoModelCategory)excludedCategory
 {
     if (resultsPerPage > kPXAPIHelperMaximumResultsPerPage)
         resultsPerPage = kPXAPIHelperMaximumResultsPerPage;
@@ -890,9 +918,13 @@
     {
         [options setValue:searchTerm forKey:@"term"];
     }
-    else if (searchTag)
+    if (searchTag)
     {
         [options setValue:searchTag forKey:@"tag"];
+    }
+    if (searchGeo)
+    {
+        [options setValue:searchGeo forKey:@"geo"];
     }
     
     if (excludedCategory != PXAPIHelperUnspecifiedCategory)
@@ -910,6 +942,7 @@
                                       self.host,
                                       self.consumerKey];
         
+        
         for (id key in options.allKeys)
         {
             [urlString appendFormat:@"&%@=%@", key, [options valueForKey:key]];
@@ -919,6 +952,8 @@
         {
             [urlString appendFormat:@"&image_size[]=%@", imageSizeString];
         }
+        
+        NSLog(@"urlString : %@",urlString);
         
         mutableRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     }

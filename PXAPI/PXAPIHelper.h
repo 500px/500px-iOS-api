@@ -92,12 +92,12 @@ typedef NS_ENUM(NSInteger, PXAPIHelperMode) {
        consumerKey:(NSString *)consumerKey
     consumerSecret:(NSString *)consumerSecret;
 
-@property (weak, nonatomic, readonly) NSString *host;
-@property (weak, nonatomic, readonly) NSString *consumerKey;
-@property (weak, nonatomic, readonly) NSString *consumerSecret;
+@property (strong, nonatomic, readonly) NSString *host;
+@property (strong, nonatomic, readonly) NSString *consumerKey;
+@property (strong, nonatomic, readonly) NSString *consumerSecret;
 
-@property (weak, nonatomic, readonly) NSString *authToken;
-@property (weak, nonatomic, readonly) NSString *authSecret;
+@property (strong, nonatomic, readonly) NSString *authToken;
+@property (strong, nonatomic, readonly) NSString *authSecret;
 
 @property (nonatomic, readonly) PXAPIHelperMode authMode;
 

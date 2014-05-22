@@ -10,7 +10,7 @@
 #import "NSData+Base64.h"
 #import <CommonCrypto/CommonHMAC.h>
 
-static NSInteger SortParameter(NSString *key1, NSString *key2, NSDictionary *context) {
+__unused static NSInteger SortParameter(NSString *key1, NSString *key2, NSDictionary *context) {
     NSComparisonResult r = [key1 compare:key2];
     if(r == NSOrderedSame) { // compare by value in this case
         NSString *value1 = [context objectForKey:key1];

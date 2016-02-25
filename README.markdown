@@ -1,4 +1,4 @@
-[DEPRECATED]
+# [DEPRECATED]
 
 Please use our public APIs directly https://github.com/500px/api-documentation
 

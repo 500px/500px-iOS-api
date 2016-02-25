@@ -1,3 +1,11 @@
+[DEPRECATED]
+
+Please use our public APIs directly https://github.com/500px/api-documentation
+
+To achieve similar functionality you can use https://github.com/RestKit/RestKit on top of your favourite networking library.
+
+=====================
+
 Writing a wrapper for the 500px API in Objective-C to make it easier for developers to write apps against this awesome service.
 
 Stil a work in progress; I'm only working on this in my spare time. It currently supports reading from the 500px API and retrieving photos, users, favourites, followers, etc. Check out the [API Documentation](https://github.com/500px/api-documentation) for more information.
